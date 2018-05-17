@@ -168,5 +168,10 @@ namespace MySocNet.Bll.Services
                 .UserRepository
                 .GetAllModerators());
         }
+
+        public UserDto ById(int id)
+        {
+            return ExecuteSelectQuery(uow => uow.UserRepository.GetById(id));
+        }
     }
 }

@@ -5,6 +5,16 @@ using MySocNet.Dal.Filters;
 
 namespace MySocNet.Bll.Dto
 {
+    public enum NotificationTypeDto
+    {
+        PostComplain,
+        PostDeletion,
+        UserPageComplain,
+        UserPageDeletion,
+        ThreadComplain,
+        ThreadDeletion,
+    }
+
     /// <summary>
     /// A censure notification from a Moderator to a User
     /// </summary>
@@ -23,6 +33,8 @@ namespace MySocNet.Bll.Dto
         /// Sender
         /// </summary>
         public UserDto Moderator { get; set; }
+
+        public NotificationTypeDto NotificationType { get; set; }
 
         public string NotificationMessage { get; set; }
 

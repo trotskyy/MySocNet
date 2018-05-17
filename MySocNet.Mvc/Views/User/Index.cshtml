@@ -1,0 +1,130 @@
+﻿@model MySocNet.Bll.Dto.UserDto
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <h4>UserDto</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Login)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Login)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Passwod)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Passwod)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CurrentState)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CurrentState)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CurrentCity)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CurrentCity)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.StateOfBirth)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.StateOfBirth)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CityOfBirth)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CityOfBirth)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AboutSelf)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AboutSelf)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IsMale)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IsMale)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.AvatarPath)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.AvatarPath)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IsModerator)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IsModerator)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

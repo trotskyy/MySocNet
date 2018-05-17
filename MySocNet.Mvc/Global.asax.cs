@@ -16,27 +16,30 @@ namespace MySocNet.Mvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static IKernel NinjectKernel { get; private set; }
+
         private void InitializeDIContainer()
         {
-            IKernel ninjectKernel = new StandardKernel();
+            NinjectKernel = new StandardKernel();
 
-            ninjectKernel.Bind<IServiceFacade>().To<ServiceFacade>();
+            NinjectKernel.Bind<IServiceFacade>().To<ServiceFacade>();
 
-            ninjectKernel.Bind<IUserService>().To<UserService>();
-            ninjectKernel.Bind<IMessageService>().To<MessageService>();
-            ninjectKernel.Bind<INotificationService>().To<NotificationService>();
-            ninjectKernel.Bind<IPostService>().To<PostService>();
-            ninjectKernel.Bind<IThreadService>().To<ThreadService>();
+            NinjectKernel.Bind<IUserService>().To<UserService>();
+            NinjectKernel.Bind<IMessageService>().To<MessageService>();
+            NinjectKernel.Bind<INotificationService>().To<NotificationService>();
+            NinjectKernel.Bind<IPostService>().To<PostService>();
+            NinjectKernel.Bind<IThreadService>().To<ThreadService>();
 
-            ninjectKernel.Bind<ISecurityProvider>().To<SHA256SecurityProvider>();
+            NinjectKernel.Bind<ISecurityProvider>().To<SHA256SecurityProvider>();
 
-            ninjectKernel.Bind<IUnitOfWorkFactory>().To<EfUnitOfWorkFactory>();
+            NinjectKernel.Bind<IUnitOfWorkFactory>().To<EfUnitOfWorkFactory>();
         }
 
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            InitializeDIContainer();
         }
     }
 }

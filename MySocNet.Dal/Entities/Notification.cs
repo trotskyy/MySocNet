@@ -7,7 +7,16 @@ using System.Threading.Tasks;
 
 namespace MySocNet.Dal.Entities
 {
-    //TODO rewrite mock context for instance
+    //TODO rewrite NotificationDto
+    public enum NotificationType
+    {
+        PostComplain,
+        PostDeletion,
+        UserPageComplain,
+        UserPageDeletion,
+        ThreadComplain,
+        ThreadDeletion,
+    }
 
     /// <summary>
     /// A censure notification from a Moderator to a User
@@ -28,6 +37,8 @@ namespace MySocNet.Dal.Entities
         /// Sender
         /// </summary>
         public User Moderator { get; set; }
+
+        public NotificationType NotificationType { get; set; }
 
         public string NotificationMessage { get; set; }
     }

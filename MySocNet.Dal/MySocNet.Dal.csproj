@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201805160418078_AddedNewFeatures.Designer.cs">
       <DependentUpon>201805160418078_AddedNewFeatures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805171240075_AddedNotificationTypeAttribute.cs" />
+    <Compile Include="Migrations\201805171240075_AddedNotificationTypeAttribute.Designer.cs">
+      <DependentUpon>201805171240075_AddedNotificationTypeAttribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="DatabaseAccess\MySocNetContext.cs" />
     <Compile Include="DatabaseAccess\MySocNetContextInitializer.cs" />
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805160418078_AddedNewFeatures.resx">
       <DependentUpon>201805160418078_AddedNewFeatures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805171240075_AddedNotificationTypeAttribute.resx">
+      <DependentUpon>201805171240075_AddedNotificationTypeAttribute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

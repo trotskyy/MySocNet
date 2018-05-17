@@ -43,6 +43,8 @@ namespace MySocNet.Bll.Dto.Utils
                 cfg.CreateMap<UserFilterDto, UserFilter>();
 
                 cfg.CreateMap<ThreadFilterDto, ThreadFilter>();
+
+                cfg.CreateMap<NotificationTypeDto, NotificationType>();
             });
 
             automapperIsInited = true;

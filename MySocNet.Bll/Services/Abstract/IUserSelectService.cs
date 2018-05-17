@@ -8,6 +8,8 @@ namespace MySocNet.Bll.Services.Abstract
 {
     public interface IUserSelectService
     {
+        UserDto ById(int id);
+
         /// <summary>
         /// Получить всех пользователей соответствующих фильтру
         /// </summary>

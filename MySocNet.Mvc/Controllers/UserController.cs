@@ -19,12 +19,19 @@ namespace MySocNet.Mvc.Controllers
             
         }
 
+        private Task<UserDto> GetUser(Func<UserDto> action)
+        {
+            return Task.Run(() => action.Invoke());
+        }
+
         // GET: User
         public async Task<ActionResult> Index(int id)
         {
-            //Task t = new Task<UserDto>(() => )
+            IServiceFacade serviceFacade = MvcApplication.NinjectKernel.Get<IServiceFacade>();
 
-            return View();
+            UserDto user = await Task.Run(() => serviceFacade.UserService.Get.ById(id));
+
+            return View(user);
         }
     }
 }
