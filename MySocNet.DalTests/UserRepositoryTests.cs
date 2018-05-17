@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySocNet.Dal.Entities;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Dal.Tests
 {
@@ -56,6 +58,23 @@ namespace MySocNet.Dal.Tests
             int[] actual = UserRepository.GetTopLastSubscribersOf(new User() { Id = 1 }, 2).Select(u => u.Id).ToArray();
 
             CollectionAssert.AreEquivalent(expectedIds, actual);
+        }
+
+        [Test()]
+        public void GetTopLastFriendsOfMatchingTest()
+        {
+            int[] expectedIdsAll = new int[] { 2, 7 };
+            int[] expectedIdsFiltered = new int[] { 2 };
+
+            User user = new User() { Id = 1 };
+            UserFilter filter = new UserFilter() { IsMale = true };
+            int[] actualAll = UserRepository.GetTopLastFriendsOfMatching(user).Select(u => u.Id).ToArray();
+            int[] actualFiltered = UserRepository.GetTopLastFriendsOfMatching(user, filter: filter).Select(u => u.Id).ToArray();
+
+            Assert.Multiple(() => {
+                CollectionAssert.AreEqual(expectedIdsAll, actualAll);
+                CollectionAssert.AreEqual(expectedIdsFiltered, actualFiltered);
+            });
         }
     }
 }

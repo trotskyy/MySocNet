@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySocNet.Dal.Entities;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Dal.Abstract
 {

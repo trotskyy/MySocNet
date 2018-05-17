@@ -9,5 +9,6 @@ namespace MySocNet.Dal.Abstract
 {
     public interface IUsersRelationRepository : IRepository<UsersRelation>
     {
+
     }
 }

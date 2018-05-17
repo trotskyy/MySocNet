@@ -19,5 +19,9 @@ namespace MySocNet.Dal.Entities
         [ForeignKey("Subscriber")]
         public int SubscriberId { get; set; }
         public User Subscriber { get; set; }
+        /// <summary>
+        /// Для отображения новых заявок на страничке Publisher-а
+        /// </summary>
+        public bool IsViewed { get; set; }
     }
 }

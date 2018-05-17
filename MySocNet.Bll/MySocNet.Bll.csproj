@@ -44,17 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\GenericService.cs" />
-    <Compile Include="Abstract\ISecurityProvider.cs" />
-    <Compile Include="Abstract\ISocNetFacade.cs" />
-    <Compile Include="Abstract\IUnitOfWorkFactory.cs" />
-    <Compile Include="Abstract\IUserSelectService.cs" />
-    <Compile Include="Abstract\IUserService.cs" />
+    <Compile Include="Dto\DialogDto.cs" />
     <Compile Include="Dto\MessageDto.cs" />
     <Compile Include="Dto\NotificationDto.cs" />
     <Compile Include="Dto\PostDto.cs" />
     <Compile Include="Dto\ThreadDto.cs" />
+    <Compile Include="Dto\ThreadFilterDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Dto\UserFilterDto.cs" />
     <Compile Include="Dto\Utils\AutomapperInitializer.cs" />
     <Compile Include="Dto\Utils\GeneralEntitiesExtensions.cs" />
     <Compile Include="Dto\Utils\UserExtensions.cs" />
@@ -63,17 +60,30 @@
     <Compile Include="Exceptions\IdNotSpecifiedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\GenericService.cs" />
+    <Compile Include="Services\Abstract\IMessageSelectService.cs" />
+    <Compile Include="Services\Abstract\IMessageService.cs" />
+    <Compile Include="Services\Abstract\INotificationService.cs" />
+    <Compile Include="Services\Abstract\IPostSelectService.cs" />
+    <Compile Include="Services\Abstract\IPostService.cs" />
     <Compile Include="Services\Abstract\ISecurityProvider.cs" />
-    <Compile Include="Services\Abstract\ISocNetFacade.cs" />
+    <Compile Include="Services\Abstract\IServiceFacade.cs" />
+    <Compile Include="Services\Abstract\IThreadSelectService.cs" />
+    <Compile Include="Services\Abstract\IThreadService.cs" />
     <Compile Include="Services\Abstract\IUnitOfWorkFactory.cs" />
     <Compile Include="Services\Abstract\IUserSelectService.cs" />
     <Compile Include="Services\Abstract\IUserService.cs" />
-    <Compile Include="Services\SecurityProvider.cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\MessageSelectService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\PostSelectService.cs" />
+    <Compile Include="Services\PostService.cs" />
+    <Compile Include="Services\ServiceFacade.cs" />
+    <Compile Include="Services\SHA256SecurityProvider.cs" />
+    <Compile Include="Services\ThreadSelectService.cs" />
+    <Compile Include="Services\ThreadService.cs" />
+    <Compile Include="Services\EfUnitOfWorkFactory.cs" />
     <Compile Include="Services\UserSelectService.cs" />
     <Compile Include="Services\UserService.cs" />
-    <Compile Include="Utils\AutomapperInitializer.cs" />
-    <Compile Include="Utils\GeneralEntitiesExtensions.cs" />
-    <Compile Include="Utils\UserExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

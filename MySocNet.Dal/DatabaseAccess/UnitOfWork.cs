@@ -84,7 +84,6 @@ namespace MySocNet.Dal
                 return _notificationRepository;
             }
         }
-
         public void Dispose()
         {
             _dbContext.Dispose();

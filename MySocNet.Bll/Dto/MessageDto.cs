@@ -23,9 +23,9 @@ namespace MySocNet.Bll.Dto
         /// <summary>
         /// Было ли сообщение прочитано
         /// </summary>
-        public bool IsRead { get; set; }
+        public bool? IsRead { get; set; }
 
-        public DateTime Sent { get; set; }
+        public DateTime? Sent { get; set; }
 
         public MessageDto()
         {

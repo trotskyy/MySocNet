@@ -62,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MySocNet.Bll\MySocNet.Bll.csproj">
+      <Project>{f1d4e40e-300c-4f00-a9b1-35cf791e3531}</Project>
+      <Name>MySocNet.Bll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MySocNet.Dal\MySocNet.Dal.csproj">
       <Project>{de4ce95e-4aef-4436-998f-6913bc523f50}</Project>
       <Name>MySocNet.Dal</Name>

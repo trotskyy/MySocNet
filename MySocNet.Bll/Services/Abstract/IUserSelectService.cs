@@ -1,5 +1,5 @@
 ﻿using MySocNet.Bll.Dto;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +13,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        List<UserDto> AllUsersMatching(UserFilter filter);
+        List<UserDto> AllUsersMatching(UserFilterDto filter);
         /// <summary>
         /// Получить всех подписчиков пользователя
         /// </summary>
@@ -43,7 +43,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="publisher">пользователь</param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        List<UserDto> AllSubscribersOfMatching(UserDto publisher, UserFilter filter);
+        List<UserDto> AllSubscribersOfMatching(UserDto publisher, UserFilterDto filter);
 
         /// <summary>
         /// Получить все НЕ подписки, соответствующие фильтру
@@ -51,7 +51,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="subscriber">пользователь</param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        List<UserDto> AllNonSubscriptionsOfMatching(UserDto subscriber, UserFilter filter);
+        List<UserDto> AllNonSubscriptionsOfMatching(UserDto subscriber, UserFilterDto filter);
 
         /// <summary>
         /// Получить все подписки пользователя
@@ -83,7 +83,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="subscriber">пользователь</param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        List<UserDto> AllSubscriptionsOfMatching(UserDto subscriber, UserFilter filter);
+        List<UserDto> AllSubscriptionsOfMatching(UserDto subscriber, UserFilterDto filter);
 
         /// <summary>
         /// Получить кол-во подписчиков
@@ -98,5 +98,14 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="subscriber"></param>
         /// <returns></returns>
         int CountOfSubscriptions(UserDto subscriber);
+
+        /// <summary>
+        /// Получить непросмотренные заявки в друзья (новых подписчиков)
+        /// </summary>
+        /// <param name="publisher"></param>
+        /// <returns></returns>
+        List<UserDto> UnviewedFriendshipRequestOf(UserDto publisher);
+
+        List<UserDto> AllModerators();
     }
 }

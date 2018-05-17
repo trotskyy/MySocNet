@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySocNet.Dal.Abstract;
 using System.Data.Entity;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using MySocNet.Dal.Entities;
 
 namespace MySocNet.Dal
@@ -71,6 +71,14 @@ namespace MySocNet.Dal
     {
         public UserRepository(MySocNetContext dbContext) : base(dbContext)
         {
+        }
+
+        public List<User> GetAllModerators()
+        {
+            return _dbContext.Users
+                .AsNoTracking()
+                .Where(u => u.IsModerator)
+                .ToList();
         }
 
         public List<User> GetAllNonSubscriptionsOfMatching(User subscriber, UserFilter filter)
@@ -165,6 +173,31 @@ namespace MySocNet.Dal
                 .Count();
         }
 
+        public List<User> GetTopLastFriendsOfMatching(User user, int skip = -1, int top = -1, UserFilter filter = null)
+        {
+            var result = _dbContext.UserRelations
+                .AsNoTracking()
+                .Where(ur => ur.SubscriberId == user.Id) //all subscriptions
+                .Select(ur => ur.PublisherId)
+                .Intersect(_dbContext.UserRelations
+                    .AsNoTracking()
+                    .Where(ur => ur.PublisherId == user.Id) //all subscribers
+                    .Select(ur => ur.SubscriberId))
+                .Join(_dbContext.Users.AsNoTracking(),
+                    id => id,
+                    u => u.Id,
+                    (ur, u) => u);
+
+            if (filter != null)
+                result = result.FilteredBy(filter);
+            if (skip > 0)
+                result = result.Skip(skip);
+            if (top > 0)
+                result = result.Take(top);
+
+            return result.ToList();
+        }
+
         public List<User> GetTopLastSubscribersOf(User publisher, int top)
         {
             return _dbContext.UserRelations
@@ -221,6 +254,16 @@ namespace MySocNet.Dal
                    u => u.Id,
                    (ur, u) => u)
                .ToList();
+        }
+
+        public List<User> GetUnviewedFriendshipRequestOf(User publisher)
+        {
+            return _dbContext.UserRelations
+                .Include(ur => ur.Subscriber)
+                .AsNoTracking()
+                .Where(ur => ur.PublisherId == publisher.Id && !ur.IsViewed)
+                .Select(ur => ur.Subscriber)
+                .ToList();
         }
     }
 }

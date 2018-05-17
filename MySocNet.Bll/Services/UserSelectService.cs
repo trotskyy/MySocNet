@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySocNet.Bll.Dto;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using MySocNet.Bll.Services.Abstract;
 using MySocNet.Dal.Abstract;
 using MySocNet.Dal.Entities;
@@ -12,37 +12,29 @@ using AutoMapper;
 
 namespace MySocNet.Bll.Services
 {
-    public class UserSelectService : GenericSelectService<UserDto, User>, IUserSelectService
+    public class UserSelectService : GenericService<UserDto, User>, IUserSelectService
     {
-        ISecurityProvider _securityProvider;
+        readonly ISecurityProvider _securityProvider;
 
         public UserSelectService(IUnitOfWorkFactory unitOfWorkFactory, ISecurityProvider securityProvider) : base(unitOfWorkFactory)
         {
             _securityProvider = securityProvider;
         }
 
-        private void ValidateUser(UserDto user)
-        {
-            if (user == null)
-                throw new ArgumentNullException();
-            if (user.Id == 0)
-                throw new IdNotSpecifiedException();
-        }
-
-        private void ValidateUser(UserDto user, UserFilter filter)
+        private void ValidateUser(UserDto user, UserFilterDto filter)
         {
             if (filter == null)
                 throw new ArgumentNullException();
             ValidateUser(user);
         }
 
-        public List<UserDto> AllNonSubscriptionsOfMatching(UserDto subscriber, UserFilter filter)
+        public List<UserDto> AllNonSubscriptionsOfMatching(UserDto subscriber, UserFilterDto filter)
         {
             ValidateUser(subscriber, filter);
 
             return ExecuteSelectQuery(unitOfWork => unitOfWork
                 .UserRepository
-                .GetAllNonSubscriptionsOfMatching(subscriber.MapToDbEntity(), filter));
+                .GetAllNonSubscriptionsOfMatching(subscriber.MapToDbEntity(), filter.MapToDbEntity()));
         }
 
         public List<UserDto> AllSubscribersOf(UserDto publisher)
@@ -54,13 +46,13 @@ namespace MySocNet.Bll.Services
                 .GetAllSubscribersOf(publisher.MapToDbEntity()));
         }
 
-        public List<UserDto> AllSubscribersOfMatching(UserDto publisher, UserFilter filter)
+        public List<UserDto> AllSubscribersOfMatching(UserDto publisher, UserFilterDto filter)
         {
             ValidateUser(publisher, filter);
 
             return ExecuteSelectQuery(unitOfWork => unitOfWork
                 .UserRepository
-                .GetAllSubscribersOfMatching(publisher.MapToDbEntity(), filter));
+                .GetAllSubscribersOfMatching(publisher.MapToDbEntity(), filter.MapToDbEntity()));
         }
 
         public List<UserDto> AllSubscriptionsOf(UserDto subscriber)
@@ -72,23 +64,23 @@ namespace MySocNet.Bll.Services
                 .GetAllSubscriptionsOf(subscriber.MapToDbEntity()));
         }
 
-        public List<UserDto> AllSubscriptionsOfMatching(UserDto subscriber, UserFilter filter)
+        public List<UserDto> AllSubscriptionsOfMatching(UserDto subscriber, UserFilterDto filter)
         {
             ValidateUser(subscriber, filter);
 
             return ExecuteSelectQuery(uow => uow
                 .UserRepository
-                .GetAllSubscriptionsOfMatching(subscriber.MapToDbEntity(), filter));
+                .GetAllSubscriptionsOfMatching(subscriber.MapToDbEntity(), filter.MapToDbEntity()));
         }
 
-        public List<UserDto> AllUsersMatching(UserFilter filter)
+        public List<UserDto> AllUsersMatching(UserFilterDto filter)
         {
             if (filter == null)
                 throw new ArgumentNullException();
 
             return ExecuteSelectQuery(uow => uow
                 .UserRepository
-                .GetAllUsersMatching(filter));
+                .GetAllUsersMatching(filter.MapToDbEntity()));
         }
 
         public int CountOfSubscribers(UserDto publisher)
@@ -159,6 +151,22 @@ namespace MySocNet.Bll.Services
             return ExecuteSelectQuery(uow => uow
                 .UserRepository
                 .GetTopLastSubscriptionsOf(subscriber.MapToDbEntity(), skip, top));
+        }
+
+        public List<UserDto> UnviewedFriendshipRequestOf(UserDto publisher)
+        {
+            ValidateUser(publisher);
+
+            return ExecuteSelectQuery(uow => uow
+                .UserRepository
+                .GetUnviewedFriendshipRequestOf(publisher.MapToDbEntity()));
+        }
+
+        public List<UserDto> AllModerators()
+        {
+            return ExecuteSelectQuery(uow => uow
+                .UserRepository
+                .GetAllModerators());
         }
     }
 }

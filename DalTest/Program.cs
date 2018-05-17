@@ -8,6 +8,8 @@ using System.Data.Entity;
 using MySocNet.Bll.Dto;
 using MySocNet.Bll.Dto.Utils;
 using AutoMapper;
+using System.Diagnostics;
+using MySocNet.Dal.Entities;
 
 namespace DalTest
 {
@@ -15,43 +17,34 @@ namespace DalTest
     {
         static void Main(string[] args)
         {
-            //User u = new User()
-            //{
-            //    Id = 1,
-            //    AboutSelf = "2323",
-            //    Login = "user666",
-            //    Passwod = "qwerty"
-            //};
-            //User u2 = new User()
-            //{
-            //    Id = 2,
-            //    AboutSelf = "sdfafawf",
-            //    Login = "us sus us sas",
-            //    Passwod = "123123"
-            //};
-            //List<User> list = new List<User>() { u, u2 };
+            User user = new User() { Id = 2 };
 
-            //Message m = new Message()
-            //{
-            //    Id = 1,
-            //    FromId = 2,
-            //    Text = "Msg txt"
-            //};
+            using (MySocNetContext _dbContext = new MySocNetContext())
+            {
+                _dbContext.Database.Log = sql => Debug.WriteLine($"\n\nSQL\n\n{sql}\n\n");
 
-            //AutomapperInitializer.InitAutoMapper();
-            //UserDto userDto = Mapper.Map<User, UserDto>(u);
-            //MessageDto messageDto = Mapper.Map<Message, MessageDto>(m);
-
-            //List<UserDto> list2 = Mapper.Map<List<User>, List<UserDto>>(list);
-
-            //UserDto userDto2 = new UserDto()
-            //{
-            //    Id = 90,
-            //    FirstName = "John",
-            //    LastName = "Malcovic",
-            //    IsMale = true
-            //};
-            //User u3 = Mapper.Map<UserDto, User>(userDto2);
+                var result = _dbContext.Users.Include(u => u.Threads)
+                   .AsNoTracking()
+                   .Where(u => u.Id == user.Id)
+                   .SelectMany(u => u.ThreadSubscriptions.Select(t => t.Id))
+                   .Join(_dbContext.Posts.AsNoTracking(),
+                       threadId => threadId,
+                       p => p.ThreadId,
+                       (threadId, p) => p)
+                   .Union(_dbContext.UserRelations
+                       .AsNoTracking()
+                       .Where(ur => ur.SubscriberId == user.Id)
+                       .Join(_dbContext.Posts.AsNoTracking(),
+                           ur => ur.PublisherId,
+                           p => p.AuthorId,
+                           (ur, p) => p));
+                var r = result.ToList().Select(p => p.Id).ToList();
+                //if (skip > 0)
+                //    result = result.Skip(skip);
+                //if (top > 0)
+                //    result = result.Take(top);
+                int breakpoint = 10;
+            }
 
             Console.WriteLine("Press ENTER to quit...");
             Console.ReadLine();

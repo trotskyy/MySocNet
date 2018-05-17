@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using MySocNet.Dal.Entities;
 using MySocNet.Bll.Dto;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Bll.Dto.Utils
 {
@@ -42,6 +43,38 @@ namespace MySocNet.Bll.Dto.Utils
         }
 
         /*
+         * Notification
+         */
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static NotificationDto MapToDtoEntity(this Notification user)
+        {
+            return Mapper.Map<Notification, NotificationDto>(user);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static List<NotificationDto> MapToDtoEntitiesList(this List<Notification> users)
+        {
+            return Mapper.Map<List<Notification>, List<NotificationDto>>(users);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static Notification MapToDbEntity(this NotificationDto user)
+        {
+            return Mapper.Map<NotificationDto, Notification>(user);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static List<Notification> MapToDbEntitiesList(this List<NotificationDto> users)
+        {
+            return Mapper.Map<List<NotificationDto>, List<Notification>>(users);
+        }
+
+        /*
          * Message
          */
         /// <summary>
@@ -71,38 +104,6 @@ namespace MySocNet.Bll.Dto.Utils
         public static List<Message> MapToDbEntitiesList(this List<MessageDto> Messages)
         {
             return Mapper.Map<List<MessageDto>, List<Message>>(Messages);
-        }
-
-        /*
-         * Notification
-         */
-        /// <summary>
-        /// Map using Automapper
-        /// </summary>
-        public static NotificationDto MapToDtoEntity(this Notification Notification)
-        {
-            return Mapper.Map<Notification, NotificationDto>(Notification);
-        }
-        /// <summary>
-        /// Map using Automapper
-        /// </summary>
-        public static List<NotificationDto> MapToDtoEntitiesList(this List<Notification> Notifications)
-        {
-            return Mapper.Map<List<Notification>, List<NotificationDto>>(Notifications);
-        }
-        /// <summary>
-        /// Map using Automapper
-        /// </summary>
-        public static Notification MapToDbEntity(this NotificationDto Notification)
-        {
-            return Mapper.Map<NotificationDto, Notification>(Notification);
-        }
-        /// <summary>
-        /// Map using Automapper
-        /// </summary>
-        public static List<Notification> MapToDbEntitiesList(this List<NotificationDto> Notifications)
-        {
-            return Mapper.Map<List<NotificationDto>, List<Notification>>(Notifications);
         }
 
         /*
@@ -167,6 +168,38 @@ namespace MySocNet.Bll.Dto.Utils
         public static List<ConvThread> MapToDbEntitiesList(this List<ThreadDto> Threads)
         {
             return Mapper.Map<List<ThreadDto>, List<ConvThread>>(Threads);
+        }
+
+        /*
+         * Filters
+         */
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static UserFilterDto MapToDtoEntity(this UserFilter filter)
+        {
+            return Mapper.Map<UserFilter, UserFilterDto>(filter);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static UserFilter MapToDbEntity(this UserFilterDto filter)
+        {
+            return Mapper.Map<UserFilterDto, UserFilter>(filter);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static ThreadFilterDto MapToDtoEntity(this ThreadFilter filter)
+        {
+            return Mapper.Map<ThreadFilter, ThreadFilterDto>(filter);
+        }
+        /// <summary>
+        /// Map using Automapper
+        /// </summary>
+        public static ThreadFilter MapToDbEntity(this ThreadFilterDto filter)
+        {
+            return Mapper.Map<ThreadFilterDto, ThreadFilter>(filter);
         }
     }
 }

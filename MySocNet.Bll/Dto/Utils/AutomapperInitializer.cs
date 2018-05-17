@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using MySocNet.Dal;
 using MySocNet.Bll.Dto;
 using MySocNet.Dal.Entities;
 
 namespace MySocNet.Bll.Dto.Utils
 {
-    static class AutomapperInitializer
+    public static class AutomapperInitializer
     {
         private static bool automapperIsInited;
 
@@ -25,10 +25,24 @@ namespace MySocNet.Bll.Dto.Utils
 
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<UserDto, User>();
-                cfg.CreateMap<MessageDto, Message>();
+                cfg.CreateMap<UserDto, User>()
+                    .ForMember(dest => dest.IsModerator, opt => opt.MapFrom(
+                        src => src.IsModerator.HasValue ? src.IsModerator.Value : false));
+
+                cfg.CreateMap<User, UserDto>()
+                    .ForMember(dest => dest.Passwod, opt => opt.Ignore());
+
+                cfg.CreateMap<MessageDto, Message>()
+                    .ForMember(dest => dest.IsRead, opt => opt.Condition(src => src.IsRead != null))
+                    .ForMember(dest => dest.Sent, opt => opt.Condition(src => src.Sent != null));
+
                 cfg.CreateMap<NotificationDto, Notification>();
+
                 cfg.CreateMap<ThreadDto, ConvThread>();
+
+                cfg.CreateMap<UserFilterDto, UserFilter>();
+
+                cfg.CreateMap<ThreadFilterDto, ThreadFilter>();
             });
 
             automapperIsInited = true;

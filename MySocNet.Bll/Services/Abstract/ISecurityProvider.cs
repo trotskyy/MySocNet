@@ -9,11 +9,11 @@ namespace MySocNet.Bll.Services.Abstract
         /// <summary>
         /// Высчитать хэш сумму строки
         /// </summary>
-        string GenerateHash(string original);
+        string ComputeHash(string original);
         /// <summary>
         /// Высчитать хэш сумму строки с солью
         /// </summary>
-        string GenerateHash(string original, string salt);
+        string ComputeHash(string original, string salt);
         /// <summary>
         /// Сгенерировать соль для добавления в конец пароля
         /// </summary>

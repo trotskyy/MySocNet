@@ -47,6 +47,16 @@ namespace MySocNet.Dal
                 .HasMany(t => t.Subscribers)
                 .WithMany(u => u.ThreadSubscriptions);
 
+            modelBuilder.Entity<Notification>()
+                .HasRequired(n => n.Moderator)
+                .WithMany(m => m.SentNotification)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Notification>()
+                .HasRequired(n => n.User)
+                .WithMany(u => u.ReceivedNotfications)
+                .WillCascadeOnDelete(false);
+
             base.OnModelCreating(modelBuilder);
         }
 

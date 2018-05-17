@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySocNet.Dal.Abstract;
 using System.Data.Entity;
 using MySocNet.Dal.Entities;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Dal
 {

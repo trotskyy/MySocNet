@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySocNet.Dal;
+using MySocNet.Dal.Entities;
 
 namespace MySocNet.Dal.Tests
 {
@@ -51,6 +51,17 @@ namespace MySocNet.Dal.Tests
             var actualIds = PostRepository.GetByThreads(threads).Select(p => p.Id).ToArray();
 
             CollectionAssert.AreEquivalent(expectedPostIds, actualIds);
+        }
+
+        [Test()]
+        public void GetTopLatestFeedPostsTest()
+        {
+            var expectedPostIds = new int[] { 19, 15, 8, 7, 12, 1, 5, 3, 2 };
+            User user = new User { Id = 2 };
+
+            var actualIds = PostRepository.GetTopLatestFeedPosts(user).Select(p => p.Id).ToArray();
+
+            CollectionAssert.AreEqual(expectedPostIds, actualIds);
         }
     }
 }

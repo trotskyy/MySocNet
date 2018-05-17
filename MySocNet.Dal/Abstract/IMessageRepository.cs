@@ -15,7 +15,7 @@ namespace MySocNet.Dal.Abstract
         /// <param name="user"></param>
         /// <param name="top">N</param>
         /// <returns></returns>
-        ICollection<Message> GetLatestMessagesFromTopLatestDialogs(User user, int top);
+        List<Message> GetLatestMessagesFromTopLatestDialogs(User user, int top);
 
         /// <summary>
         /// Получить по одному последнему сообщению на каждый диалог из N последних диалогов юзера, следующих за М последних диалогов юзера
@@ -24,7 +24,7 @@ namespace MySocNet.Dal.Abstract
         /// <param name="skip">М - которые пропускаем</param>
         /// <param name="top">N - которые берем</param>
         /// <returns></returns>
-        ICollection<Message> GetLatestMessagesFromTopLatestDialogs(User user, int skip, int top);
+        List<Message> GetLatestMessagesFromTopLatestDialogs(User user, int skip, int top);
 
         /// <summary>
         /// Получить N последних сообщений диалога между двумя пользователями
@@ -33,7 +33,7 @@ namespace MySocNet.Dal.Abstract
         /// <param name="user2"></param>
         /// <param name="top">N</param>
         /// <returns></returns>
-        ICollection<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int top);
+        List<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int top);
 
         /// <summary>
         /// Получить N последних сообщений диалога между двумя пользователями, следующих за М последних сообщений диалога
@@ -43,10 +43,10 @@ namespace MySocNet.Dal.Abstract
         /// <param name="skip">M - - которые пропускаем</param>
         /// <param name="top">N - которые берем</param>
         /// <returns></returns>
-        ICollection<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int skip, int top);
+        List<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int skip, int top);
 
-        ICollection<Message> GetAllUnreadMessagesFrom(User from);
-        ICollection<Message> GetAllUnreadMessagesTo(User to);
+        List<Message> GetAllUnreadMessagesFrom(User from);
+        List<Message> GetAllUnreadMessagesTo(User to);
         /// <summary>
         /// Получить кол-во непрочитанных сообщений к юзеру
         /// </summary>

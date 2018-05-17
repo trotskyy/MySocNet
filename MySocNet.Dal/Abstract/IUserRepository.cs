@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using MySocNet.Dal.Entities;
 
 namespace MySocNet.Dal.Abstract
@@ -90,6 +90,8 @@ namespace MySocNet.Dal.Abstract
         /// <returns></returns>
         List<User> GetAllSubscriptionsOfMatching(User subscriber, UserFilter filter);
 
+        List<User> GetTopLastFriendsOfMatching(User user, int skip = -1, int top = -1, UserFilter filter = null);
+
         /// <summary>
         /// Получить кол-во подписчиков
         /// </summary>
@@ -103,5 +105,14 @@ namespace MySocNet.Dal.Abstract
         /// <param name="subscriber"></param>
         /// <returns></returns>
         int GetCountOfSubscriptions(User subscriber);
+
+        /// <summary>
+        /// Получить непросмотренные заявки в друзья (новых подписчиков)
+        /// </summary>
+        /// <param name="publisher"></param>
+        /// <returns></returns>
+        List<User> GetUnviewedFriendshipRequestOf(User publisher);
+
+        List<User> GetAllModerators();
     }
 }

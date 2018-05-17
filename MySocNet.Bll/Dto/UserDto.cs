@@ -37,7 +37,7 @@ namespace MySocNet.Bll.Dto
         /// О себе
         /// </summary>
         public string AboutSelf { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         /// <summary>
         /// Male, Female or not mentioned
         /// </summary>
@@ -46,6 +46,8 @@ namespace MySocNet.Bll.Dto
         /// Путь, по которому лежит фотка аватара юзера
         /// </summary>
         public string AvatarPath { get; set; }
+        //TODO how automapper will map nullable on strct???
+        public bool? IsModerator { get; set; }
 
         public UserDto()
         {

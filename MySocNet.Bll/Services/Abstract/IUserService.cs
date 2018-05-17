@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySocNet.Bll.Dto;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Bll.Services.Abstract
 {

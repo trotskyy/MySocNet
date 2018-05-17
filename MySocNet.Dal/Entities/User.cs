@@ -15,8 +15,8 @@ namespace MySocNet.Dal.Entities
         //[Required]
         public string Login { get; set; }
         //[Required]
-        public string PasswodHash { get; set; }
-        public string PasswodSalt { get; set; }
+        public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; }
         //[Required]
         /// <summary>
         /// Имя
@@ -48,7 +48,7 @@ namespace MySocNet.Dal.Entities
         /// </summary>
         public string AboutSelf { get; set; }
         [Column(TypeName = "Date")]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         /// <summary>
         /// Male, Female or not mentioned
         /// </summary>
@@ -57,6 +57,8 @@ namespace MySocNet.Dal.Entities
         /// Путь, по которому лежит фотка аватара юзера
         /// </summary>
         public string AvatarPath { get; set; }
+
+        public bool IsModerator{ get; set; }
 
         public ICollection<Message> MessagesFromUser { get; set; }
         public ICollection<Message> MessagesToUser { get; set; }
@@ -81,6 +83,10 @@ namespace MySocNet.Dal.Entities
         /// </summary>
         public ICollection<UsersRelation> Subscribers { get; set; }
 
-        public ICollection<Notification> Notifications { get; set; }
+        public ICollection<Notification> ReceivedNotfications { get; set; }
+        /// <summary>
+        /// In case User is Moderator only
+        /// </summary>
+        public ICollection<Notification> SentNotification { get; set; }
     }
 }

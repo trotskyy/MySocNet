@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
+using MySocNet.Bll.Dto;
 using MySocNet.Bll.Dto.Utils;
 using MySocNet.Bll.Exceptions;
 using MySocNet.Dal.Abstract;
@@ -24,6 +25,19 @@ namespace MySocNet.Bll.Services.Abstract
 
             _unitOfWorkFactory = unitOfWorkFactory;
         }
+        /// <summary>
+        /// Check user != Null and Id != 0
+        /// </summary>
+        /// <param name="user"></param>
+        protected void ValidateUser(UserDto user) //almost in all repos we validate user
+        {
+            if (user == null)
+                throw new ArgumentNullException();
+            if (user.Id == 0)
+                throw new IdNotSpecifiedException();
+        }
+
+
 
         /// <summary>
         /// ExecuteSelectQuery(unitOfWork => unitOfWork

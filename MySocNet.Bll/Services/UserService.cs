@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySocNet.Bll.Dto;
 using MySocNet.Bll.Services.Abstract;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 using MySocNet.Dal.Abstract;
 using MySocNet.Dal;
 using MySocNet.Dal.Entities;
@@ -21,10 +21,17 @@ namespace MySocNet.Bll.Services
         public UserService(IUnitOfWorkFactory unitOfWorkFactory, ISecurityProvider securityProvider) : base(unitOfWorkFactory)
         {
             _securityProvider = securityProvider;
-            _userSelectService = new UserSelectService(unitOfWorkFactory, securityProvider);
         }
 
-        public IUserSelectService Get => _userSelectService;
+        public IUserSelectService Get
+        {
+            get
+            {
+                if(_userSelectService == null)
+                    _userSelectService = new UserSelectService(_unitOfWorkFactory, _securityProvider);
+                return _userSelectService;
+            }
+        }
 
         public void CheckLoginAndPassword(UserDto user, out bool isLoginValid, out bool isPasswordValid)
         {
@@ -57,8 +64,8 @@ namespace MySocNet.Bll.Services
             }
 
             isLoginValid = true;
-            string passwordHash = _securityProvider.GenerateHash(user.Passwod, userDb.PasswodSalt);
-            isPasswordValid = passwordHash == userDb.PasswodHash;
+            string passwordHash = _securityProvider.ComputeHash(user.Passwod, userDb.PasswordSalt);
+            isPasswordValid = passwordHash == userDb.PasswordHash;
         }
 
         public void CreateAccount(UserDto user)
@@ -74,8 +81,8 @@ namespace MySocNet.Bll.Services
 
             User userToAdd = user.MapToDbEntity();
             //generate 128 bit salt
-            userToAdd.PasswodSalt = _securityProvider.GenerateSalt(128 / 8);
-            userToAdd.PasswodHash = _securityProvider.GenerateHash(user.Passwod, userToAdd.PasswodSalt);
+            userToAdd.PasswordSalt = _securityProvider.GenerateSalt(128 / 8);
+            userToAdd.PasswordHash = _securityProvider.ComputeHash(user.Passwod, userToAdd.PasswordSalt);
 
             ExecuteNonQuery(uow => {
                 uow.UserRepository.Create(userToAdd);
@@ -116,14 +123,6 @@ namespace MySocNet.Bll.Services
                         SubscriberId = subscriber.Id
                     };
                     unitOfWork.UsersRelationRepository.Create(usersRelation);
-
-                    Notification notification = new Notification()
-                    {
-                        Type = NotificationType.NewSubscriber,
-                        NotificationMessage = $"{subscriberFromDb.FullName()} подписался на Ваши обновления",
-                        UserId = publisherFromDb.Id
-                    };
-                    unitOfWork.NotificationRepository.Create(notification);
                     unitOfWork.SaveChanges();
                 });
         }

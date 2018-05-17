@@ -1,19 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MySocNet.Dal.Common;
+using MySocNet.Dal.Filters;
 
 namespace MySocNet.Bll.Dto
 {
+    /// <summary>
+    /// A censure notification from a Moderator to a User
+    /// </summary>
     public class NotificationDto
     {
         public int Id { get; set; }
-        public NotificationType Type { get; set; }
-        public int NotificationMessage { get; set; }
-        public bool IsRead { get; set; }
 
         public int UserId { get; set; }
+        /// <summary>
+        /// Receiver
+        /// </summary>
         public UserDto User { get; set; }
+
+        public int ModeratorId { get; set; }
+        /// <summary>
+        /// Sender
+        /// </summary>
+        public UserDto Moderator { get; set; }
+
+        public string NotificationMessage { get; set; }
 
         public NotificationDto()
         {

@@ -15,7 +15,7 @@ namespace MySocNet.Dal
         {
         }
 
-        public ICollection<Message> GetAllUnreadMessagesFrom(User from)
+        public List<Message> GetAllUnreadMessagesFrom(User from)
         {
             return _dbContext.Messages
                 .AsNoTracking()
@@ -23,7 +23,7 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public ICollection<Message> GetAllUnreadMessagesTo(User to)
+        public List<Message> GetAllUnreadMessagesTo(User to)
         {
             return _dbContext.Messages
                 .AsNoTracking()
@@ -31,7 +31,7 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public ICollection<Message> GetLatestMessagesFromTopLatestDialogs(User user, int top)
+        public List<Message> GetLatestMessagesFromTopLatestDialogs(User user, int top)
         {
             return _dbContext.Messages
                 .AsNoTracking()
@@ -42,7 +42,7 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public ICollection<Message> GetLatestMessagesFromTopLatestDialogs(User user, int skip, int top)
+        public List<Message> GetLatestMessagesFromTopLatestDialogs(User user, int skip, int top)
         {
             return _dbContext.Messages
                 .AsNoTracking()
@@ -54,7 +54,7 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public ICollection<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int top)
+        public List<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int top)
         {
             return _dbContext.Messages
                 .AsNoTracking()
@@ -65,7 +65,7 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public ICollection<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int skip, int top)
+        public List<Message> GetTopLatestMessagesOfDialogBetween(User user1, User user2, int skip, int top)
         {
             return _dbContext.Messages
                 .AsNoTracking()
