@@ -102,5 +102,10 @@ namespace MySocNet.Bll.Services
                 .GetThreadsWithSubscribersCountBySubscriberMatching(subscriber.MapToDbEntity(),
                                                                     filter.MapToDbEntity()));
         }
+
+        public ThreadDto ById(int id)
+        {
+            return ExecuteSelectQuery(uow => uow.ThreadRepository.GetById(id));
+        }
     }
 }

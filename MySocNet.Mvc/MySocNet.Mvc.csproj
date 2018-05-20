@@ -76,6 +76,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Providers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.2.0.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -111,22 +114,66 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Content\Scripts\scripts.js" />
+    <Content Include="Content\Styles\Style.css" />
+    <Content Include="Content\UserImages\UserImage.png" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <None Include="Scripts\jquery-1.8.0.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.0.js" />
+    <Content Include="Scripts\jquery-1.8.0.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ModeratorController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\ThreadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Cookies.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Common\MessageVm.cs" />
+    <Compile Include="Models\Common\NotificationVm.cs" />
+    <Compile Include="Models\Common\PostVm.cs" />
+    <Compile Include="Models\Common\ThreadFilterVm.cs" />
+    <Compile Include="Models\Common\ThreadVm.cs" />
+    <Compile Include="Models\Common\UserFilterVm.cs" />
+    <Compile Include="Models\Common\UserVm.cs" />
+    <Compile Include="Models\RegistrationVm.cs" />
+    <Compile Include="Models\Utils\BooleanDisplayValuesAttribute.cs" />
+    <Compile Include="Models\Utils\VmExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\MembershipUserSerializeModel.cs" />
+    <Compile Include="Providers\MSNAuthorizeAttribute.cs" />
+    <Compile Include="Providers\MySocNetMembershipProvider.cs" />
+    <Compile Include="Providers\MySocNetMembershipUser.cs" />
+    <Compile Include="Providers\MySocNetPrincipal.cs" />
+    <Compile Include="Providers\MySocNetRoleProvider.cs" />
+    <Compile Include="Providers\Roles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
-    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutUnauthorized.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\Authorized.cshtml" />
+    <Content Include="Views\Home\Contacts.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -136,8 +183,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\Home\" />
+    <Folder Include="Views\Moderator\" />
+    <Folder Include="Views\Post\" />
+    <Folder Include="Views\Registration\" />
+    <Folder Include="Views\Thread\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MySocNet.Bll\MySocNet.Bll.csproj">

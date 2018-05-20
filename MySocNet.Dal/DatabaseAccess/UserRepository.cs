@@ -73,6 +73,31 @@ namespace MySocNet.Dal
         {
         }
 
+        public List<User> GetAllFriendsOf(User user)
+        {
+            /*
+             SELECT * FROM (SELECT SubscriberId FROM UsersRelations WHERE PublisherId = 1
+              INTERSECT
+             SELECT PublisherId FROM UsersRelations WHERE SubscriberId = 1) as ur
+             JOIN Users as u
+	           ON ur.SubscriberId = u.Id
+             */
+            return _dbContext.UserRelations
+                .AsNoTracking()
+                .Where(ur => ur.SubscriberId == user.Id)
+                .Select(ur => ur.PublisherId) // subscriptions
+                .Intersect(_dbContext.UserRelations
+                            .AsNoTracking()
+                            .Where(ur => ur.PublisherId == user.Id)
+                            .Select(ur => ur.SubscriberId)) //subscribers
+                .Join(_dbContext.Users.AsNoTracking(),
+                        id => id,
+                        u => u.Id,
+                        (id, u) => u)
+                .ToList();
+
+        }
+
         public List<User> GetAllModerators()
         {
             return _dbContext.Users

@@ -9,6 +9,8 @@ namespace MySocNet.Bll.Services.Abstract
 {
     public interface IPostSelectService
     {
+        PostDto ById(int id);
+
         List<PostDto> ByThread(ThreadDto thread);
         List<PostDto> ByThreads(List<ThreadDto> threads);
 
@@ -22,6 +24,8 @@ namespace MySocNet.Bll.Services.Abstract
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        List<PostDto> GetTopLatestFeedPosts(UserDto user, int skip = -1, int top = -1);
+        List<PostDto> TopLatestFeedPosts(UserDto user, int skip = -1, int top = -1);
+
+        List<PostDto> AllTopRecentPosts(int skip = -1, int top = -1);
     }
 }

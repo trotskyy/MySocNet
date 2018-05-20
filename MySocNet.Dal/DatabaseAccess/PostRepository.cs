@@ -16,6 +16,17 @@ namespace MySocNet.Dal
         {
         }
 
+        public List<Post> GetAllTopRecentPosts(int skip, int top)
+        {
+            var res = _dbContext.Posts
+                .AsNoTracking();
+            if (skip > 0)
+                res = res.Skip(skip);
+            if (top > 0)
+                res = res.Take(top);
+            return res.ToList();
+        }
+
         public List<Post> GetByAuthor(User author)
         {
             return _dbContext.Posts

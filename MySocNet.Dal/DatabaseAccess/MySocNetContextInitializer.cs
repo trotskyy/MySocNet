@@ -12,7 +12,6 @@ namespace MySocNet.Dal
     {
         protected override void Seed(MySocNetContext context)
         {
-            //TODO Seed Database
             User u1 = new User() { FirstName = "u1" };
             User u2 = new User() { FirstName = "u2" };
             Message m1 = new Message() { Text = "hello", From = u1, To = u2 };

@@ -19,7 +19,7 @@ namespace MySocNet.Bll.Services
         {
         }
 
-        public IPostSelectService PostSelectService
+        public IPostSelectService Get
         {
             get
             {

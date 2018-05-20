@@ -46,7 +46,7 @@ namespace MySocNet.Bll.Dto
         /// Путь, по которому лежит фотка аватара юзера
         /// </summary>
         public string AvatarPath { get; set; }
-        //TODO how automapper will map nullable on strct???
+
         public bool? IsModerator { get; set; }
 
         public UserDto()

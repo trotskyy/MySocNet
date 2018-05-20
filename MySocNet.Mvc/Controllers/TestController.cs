@@ -1,0 +1,24 @@
+﻿using MySocNet.Mvc.Providers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace MySocNet.Mvc.Controllers
+{
+    public class TestController : Controller
+    {
+        // GET: Test
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [MSNAuthorize(Roles = Roles.User)]
+        public ActionResult Authorized()
+        {
+            return View();
+        }
+    }
+}

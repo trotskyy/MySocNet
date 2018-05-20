@@ -11,6 +11,8 @@ namespace MySocNet.Bll.Services.Abstract
     {
         int SubscribersCount(ThreadDto thread);
 
+        ThreadDto ById(int id);
+
         /// <summary>
         /// Трэд с кол-вом подписчиков, которые ведет юзер
         /// </summary>

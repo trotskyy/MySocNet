@@ -114,5 +114,7 @@ namespace MySocNet.Dal.Abstract
         List<User> GetUnviewedFriendshipRequestOf(User publisher);
 
         List<User> GetAllModerators();
+
+        List<User> GetAllFriendsOf(User user);
     }
 }

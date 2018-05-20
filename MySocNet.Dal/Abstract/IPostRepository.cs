@@ -18,5 +18,6 @@ namespace MySocNet.Dal.Abstract
         List<Post> GetByAuthorsOrThreads(IEnumerable<User> authors, IEnumerable<ConvThread> threads);
 
         List<Post> GetTopLatestFeedPosts(User user, int skip = -1, int top = -1);
+        List<Post> GetAllTopRecentPosts(int skip, int top);
     }
 }

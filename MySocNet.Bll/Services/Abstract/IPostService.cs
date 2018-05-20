@@ -9,7 +9,7 @@ namespace MySocNet.Bll.Services.Abstract
 {
     public interface IPostService
     {
-        IPostSelectService PostSelectService { get; }
+        IPostSelectService Get { get; }
 
         void Write(PostDto post);
 

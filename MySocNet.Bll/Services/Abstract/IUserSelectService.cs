@@ -10,6 +10,8 @@ namespace MySocNet.Bll.Services.Abstract
     {
         UserDto ById(int id);
 
+        UserDto ByLogin(string login);
+
         /// <summary>
         /// Получить всех пользователей соответствующих фильтру
         /// </summary>
@@ -109,5 +111,7 @@ namespace MySocNet.Bll.Services.Abstract
         List<UserDto> UnviewedFriendshipRequestOf(UserDto publisher);
 
         List<UserDto> AllModerators();
+
+        List<UserDto> AllFriendsOf(UserDto user);
     }
 }

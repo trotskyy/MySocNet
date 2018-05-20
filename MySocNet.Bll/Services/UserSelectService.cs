@@ -171,7 +171,25 @@ namespace MySocNet.Bll.Services
 
         public UserDto ById(int id)
         {
+            if (id == 0)
+                throw new IdNotSpecifiedException();
+
             return ExecuteSelectQuery(uow => uow.UserRepository.GetById(id));
+        }
+
+        public List<UserDto> AllFriendsOf(UserDto user)
+        {
+            ValidateUser(user);
+
+            return ExecuteSelectQuery(uow => uow.UserRepository.GetAllFriendsOf(user.MapToDbEntity()));
+        }
+
+        public UserDto ByLogin(string login)
+        {
+            if (string.IsNullOrWhiteSpace(login))
+                throw new DtoValidationException("Provide not empty login");
+
+            return ExecuteSelectQuery(uow => uow.UserRepository.GetByLogin(login));
         }
     }
 }

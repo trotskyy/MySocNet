@@ -1,0 +1,332 @@
+/* ################################### *\
+|                                       |
+|                COMMON                 |
+|                                       |
+\* ################################### */
+html, body{
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+body{
+    min-width: 1424px;
+    margin: 0px;
+    background: rgb(182, 182, 182);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+    margin: 0 auto;
+    width: 90%; 
+    padding: 10px;
+    background-color: rgb(36, 36, 36);
+    color: rgb(209, 209, 209);
+    font-weight: bold;
+    height: 110px;
+}
+header nav{
+    display: inline-block;
+}
+header h1{
+    display: inline-block;
+    font-family: 'Comic sans MS';
+}
+header li{
+    margin: 0px;
+    display: inline-block;
+}
+header a{
+    margin: 0px;
+    padding: 10px;
+    text-decoration: none;
+    color: #ddd;
+    font-size: 22px;
+    border-left: solid rgba(0, 0, 0, 0) 2px;
+    border-right: solid rgba(0, 0, 0, 0) 2px;
+}
+.registrationLink{
+    font-size: 20px;
+    margin-left: 70px;
+    
+}
+header a:hover{
+    color: #fff;
+    border-left: solid #fff 2px;
+    border-right: solid #fff 2px;
+    text-shadow: 0px 0px 50px #eee
+}
+#loginForm{
+    width: 200px;
+    float: right;
+}
+#loginForm *{
+    clear: both;
+    display: block;
+    width: 100%;
+    margin: 5px;
+}
+#loginForm input{
+    padding: 3px;
+}
+#loginForm button{
+    color: #eee;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-style: none;
+    background: rgb(36, 36, 36);
+    font-size: 18px;
+}
+#loginForm button:hover{
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0px 0px 35px #eee
+}
+#upperMenuWrapper{
+    margin: 0px 200px 0px 100px;
+}
+#contentWrapper{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    background: #fff;
+    margin: 0 auto;
+    width: 90%;
+    height: calc(100% - 130px);
+}
+.leftSideMenu{
+    margin: 10px;
+    float: left;
+    width: 200px;
+}
+.leftSideMenu img{
+    z-index: 1;
+    width: 200px;
+}
+.leftSideMenu img:hover{
+    cursor: pointer;
+}
+#imageCover{
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: rgba(255, 255, 255, 0);
+    z-index: 2;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    line-height: 200px;
+}
+#imageCover span{
+    vertical-align: middle;
+}
+#imageCover:hover{
+    cursor: pointer;
+    box-shadow: inset 0 0 40px #000;
+    background: rgba(0, 0, 0, 0.479);
+    color: rgba(255, 255, 255);
+    text-shadow: 0 0 10 #000;
+}
+.leftSideMenu nav{
+    margin: 0 10px 0 10px;
+}
+.leftSideMenu ul{
+    list-style: none;
+    padding: 0px; 
+}
+.leftSideMenu li{
+    display: block;
+}
+.leftSideMenu li a{
+    display: block;
+    padding: 5px 0px 5px 5px;
+    
+    text-decoration: none;
+    color: #222;
+}
+.leftSideMenu li a:hover{
+    background-color: #eee;
+    font-weight: bolder;
+}
+.leftSideMenu li a span{
+    font-weight: bold;
+    float: right;
+    display: block;
+}
+
+.mainContentWrapper{
+    display: flex;
+    flex-direction: column;
+    float: left;
+    margin: 10px;
+}
+
+.mainContent{
+    overflow-y: scroll;
+    background: #eee;
+}
+.mainContent::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+.mainContent::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+.mainContent::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgb(37, 37, 37);
+}
+.mainContentHeader{
+    padding: 5px;
+}
+.rightSideMenu{
+    width: 1300px;
+    margin: 10px;
+}
+#loadUserImageDialog button{
+    padding: 5px;
+}
+#loadUserImageDialog input{
+    padding: 5px;
+}
+#loadUserImageDialog p:nth-of-type(2){
+    margin: 0px;
+    color: #888;
+    font-size: 10px;
+}
+#lo
+#loadUserImageDialog form div{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 20px;
+}
+#loadUserImageDialog::backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+/* ################################### *\
+|                                       |
+|              USER PAGE                |
+|                                       |
+\* ################################### */
+.feedArticle{
+    padding: 10px;
+    border: #555 solid 1px;
+    margin: 10px;
+    background: #fff;
+}
+.feedArticle h3{
+    margin: 2px;
+}
+.feedArticle h3 a{
+    text-decoration: none;
+    color: #000; 
+}
+.feedArticle h3 a:hover{
+    text-decoration: underline;
+}
+.feedArticle h4{
+    margin: 5px 0 0 20px;
+}
+.feedArticle h4 a{
+    text-decoration: none;
+    color: #333;
+}
+.feedArticle h4 a:hover{
+    text-decoration: underline;
+}
+.feedArticle h5{
+    margin: 5px 0 0 20px;
+}
+.feedArticle h5 a{
+    text-decoration: none;
+    color: #555;
+}
+.feedArticle h5 a:hover{
+    text-decoration: underline;
+}
+.feedFilterForm div{
+    margin: 10px;
+    float: left;
+}
+.feedFilterForm div div{
+    margin: 0px;
+    clear: both;
+}
+
+/* ################################### *\
+|                                       |
+|               FRIENDS                 |
+|                                       |
+\* ################################### */
+.myFriendsContentHeader a{
+    padding: 5px;
+    display: inline-block;
+    color: #000;
+    text-decoration: none;
+    font-weight: bolder;
+}
+.myFriendsContentHeader a:hover{
+    color: #555;
+    text-decoration: none;
+}
+.myFriendsContentHeader form{
+    float: right;
+}
+.myFriendsContentHeader form input{
+    padding: 5px;
+    width: 200px;
+}
+.myFriendsContentHeader form button{
+    padding: 5px 10px 5px 10px;
+    font-weight: bolder;
+    background-color: #333;
+    color: #eee;
+}
+.myFriendsContentHeader form button:hover{
+    cursor: pointer;
+    background-color: #777;
+    color: #000;
+}
+.friendFilterForm p{
+    margin: 15px 0 2px 0;
+}
+.friendFilterForm{
+    padding: 10px;
+}
+.friendFilterForm input{
+    padding: 5px;
+    margin: 5px;
+}
+.friendFilterForm select{
+    padding: 5px;
+}
+.friendFilterForm textarea{
+    width: 100%;
+    resize: vertical;
+}
+.subscriberOrSubscription{
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    background: #F5F5F5;
+    border: solid #555 1px;
+}
+.subscriberOrSubscriptionList{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

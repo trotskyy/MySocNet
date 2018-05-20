@@ -67,11 +67,24 @@ namespace MySocNet.Bll.Services
             return ExecuteSelectQuery(uow => uow.PostRepository.GetByThreads(threads.MapToDbEntitiesList()));
         }
 
-        public List<PostDto> GetTopLatestFeedPosts(UserDto user, int skip = -1, int top = -1)
+        public List<PostDto> TopLatestFeedPosts(UserDto user, int skip = -1, int top = -1)
         {
             ValidateUser(user);
 
             return ExecuteSelectQuery(uow => uow.PostRepository.GetTopLatestFeedPosts(user.MapToDbEntity(), skip, top));
+        }
+
+        public PostDto ById(int id)
+        {
+            if (id < 1)
+                throw new ArgumentOutOfRangeException();
+
+            return ExecuteSelectQuery(uow => uow.PostRepository.GetById(id));
+        }
+
+        public List<PostDto> AllTopRecentPosts(int skip = -1, int top = -1)
+        {
+            return ExecuteSelectQuery(uow => uow.PostRepository.GetAllTopRecentPosts(skip, top));
         }
     }
 }
