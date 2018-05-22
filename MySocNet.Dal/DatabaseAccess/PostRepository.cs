@@ -77,7 +77,23 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
-        public List<Post> GetTopLatestFeedPosts(User user, int skip = -1, int top = -1)
+        public List<Post> GetPostsByThreadName(string threadName, int top, int skip)
+        {
+            var res = _dbContext.Threads
+                .AsNoTracking()
+                .Where(t => t.Name == threadName)
+                .Join(_dbContext.Posts.AsNoTracking(),
+                    t => t.Id,
+                    p => p.ThreadId,
+                    (t, p) => p);
+            if (skip > 0)
+                res = res.Skip(skip);
+            if (top > 0)
+                res = res.Take(top);
+            return res.ToList();
+        }
+
+        public List<Post> GetTopLatestFeedPosts(User user, int skip = -1, int top = -1, bool withAuthors = false)
         {
             /*
               SELECT p.Id, p.AuthorId, p.ThreadId, p.Text, p.Published FROM (SELECT ConvThread_Id FROM ConvThreadUsers WHERE [User_Id] = 2) as t
@@ -89,6 +105,7 @@ namespace MySocNet.Dal
 	            ON ur.PublisherId = p.AuthorId
 	            ORDER BY Published DESC             
              */
+
             var result = _dbContext.Users.Include(u => u.Threads)
                 .AsNoTracking()
                 .Where(u => u.Id == user.Id)

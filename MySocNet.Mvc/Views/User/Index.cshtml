@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MySocNet.Mvc.Models.Common.PostVm>
+
+@{
+    ViewBag.Title = "Новости";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div class="mainContentWrapper">
+    <div class="mainContentHeader">
+        <form class="feedFilterForm">
+            <div>
+                <div>
+                    <input type="checkbox" id="showUserPostsCkBx" value="true" />
+                    <label for="users">Посты друзей</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="showThreadPostsCkBx" value="true" />
+                    <label for="users">Посты тредов</label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    Искать в постах:
+                </div>
+                <div>
+                    <input type="text" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mainContent">
+        @foreach (var post in Model)
+        {
+        <div class="feedArticle">
+            @if (!string.IsNullOrEmpty(post.Thread.Name))
+            {
+                <h3>@Html.ActionLink(post.Thread.Name, "Index", new { controller = "Thread", id = post.ThreadId })</h3>
+            }
+            <h4>
+                @Html.ActionLink(post.Author.FirstName+" "+post.Author.LastName,
+                "UserPage", new { controller = "Home", id = post.ThreadId })
+            </h4>
+        <p>@post.Text</p>
+        <h5>@post.Published</h5>
+        </div>
+        }
+    </div>
+</div>

@@ -25,11 +25,27 @@ namespace MySocNet.Mvc.Controllers
         {
             _serviceFacade = MvcApplication.NinjectKernel.Get<IServiceFacade>();
         }
-
-        // GET: Registration
-        public async Task<ActionResult> Index()
+        /// <summary>
+        /// Creates FormsAuthenticationTicket and HttpCookie authCookie. Adds them to HttpResponse
+        /// </summary>
+        /// <param name="user"></param>
+        private void SignIn(MySocNetMembershipUser user)
         {
-            return View();
+            MembershipUserSerializeModel serializeModel = new MembershipUserSerializeModel()
+            {
+                UserId = user.UserId,
+                Login = user.Login,
+                Roles = user.Roles
+            };
+
+            string userData = System.Web.Helpers.Json.Encode(serializeModel);
+
+            FormsAuthenticationTicket authenticationTicket = new FormsAuthenticationTicket
+                (1, user.Login, DateTime.Now, DateTime.Now.AddMinutes(30), true, userData);
+
+            string enTicket = FormsAuthentication.Encrypt(authenticationTicket);
+            HttpCookie authCookie = new HttpCookie(Cookies.AuthentificationCookieName, enTicket);
+            Response.Cookies.Add(authCookie);
         }
 
         [AllowAnonymous]
@@ -55,23 +71,11 @@ namespace MySocNet.Mvc.Controllers
 
             var user = await Task.Run(() => (MySocNetMembershipUser)Membership.GetUser(login, false));
 
-            MembershipUserSerializeModel serializeModel = new MembershipUserSerializeModel()
-            {
-                UserId = user.UserId,
-                Login = user.Login,
-                Roles = user.Roles
-            };
+            SignIn(user);
 
-            string userData = System.Web.Helpers.Json.Encode(serializeModel);
+            //redirect logic
 
-            FormsAuthenticationTicket authenticationTicket = new FormsAuthenticationTicket
-                (1, user.Login, DateTime.Now, DateTime.Now.AddMinutes(30), true, userData);
-
-            string enTicket = FormsAuthentication.Encrypt(authenticationTicket);
-            HttpCookie authCookie = new HttpCookie(Cookies.AuthentificationCookieName, enTicket);
-            Response.Cookies.Add(authCookie);
-
-            if(user.Roles.Contains(Providers.Roles.User))
+            if (user.Roles.Contains(Providers.Roles.User))
                 return JavaScript($"window.location = '{Url.Action("Index", "User", new { id = user.UserId })}'");
 
             else //Moderator
@@ -82,7 +86,15 @@ namespace MySocNet.Mvc.Controllers
         [HttpGet]
         public ActionResult SignUp() //registration form
         {
-            //TODO create ActionMethod
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole(Providers.Roles.User))
+                    return RedirectToAction("Index", "User", new { id = ((MySocNetPrincipal)User).UserId});
+
+                if (User.IsInRole(Providers.Roles.Moderator))
+                    return RedirectToAction("Index", "Moderator", new { id = ((MySocNetPrincipal)User).UserId });
+            }
+
             return View(new RegistrationVm());
         }
 
@@ -90,7 +102,6 @@ namespace MySocNet.Mvc.Controllers
         [HttpPost]
         public async Task<ActionResult> SignUp(RegistrationVm registrationVm)
         {
-            bool statusRegistration = false;
             string messageRegistration = string.Empty;
 
             if (ModelState.IsValid)
@@ -106,19 +117,22 @@ namespace MySocNet.Mvc.Controllers
                 UserDto newUser = Mapper.Map<RegistrationVm, UserDto>(registrationVm);
                 _serviceFacade.UserService.CreateAccount(newUser);
 
-                statusRegistration = true;
-                //TODO Redirect logic here
+                MySocNetMembershipUser membershipUser = new MySocNetMembershipUser(newUser);
+                SignIn(membershipUser);
+
+                //redirecting
+                return JavaScript($"window.location = '{Url.Action("Settings", "User", new { id = membershipUser.UserId })}'");
             }
             else
                 messageRegistration = "Не все поля заполнены корректно!";
 
-            ViewBag.Message = messageRegistration;
-            ViewBag.Status = statusRegistration;
+            ViewBag.RegistrationErrorMessage = messageRegistration;
 
             return View(registrationVm);
         }
 
         [HttpPost]
+        [MSNAuthorize]
         public async Task<ActionResult> SignOut()
         {
             HttpCookie httpCookie = new HttpCookie(Cookies.AuthentificationCookieName, "")

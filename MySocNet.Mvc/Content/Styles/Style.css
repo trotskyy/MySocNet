@@ -1,13 +1,54 @@
 /* ################################### *\
 |                                       |
+|                ASP.NET                |
+|                                       |
+\* ################################### */
+.text-danger{
+    color:red;
+}
+.form-control:invalid{
+    border-color:red;
+}
+.form-control {
+    margin: 10px;
+}
+.newAccountForm{
+    margin:50px 0px 0px 100px;
+    align-content:center;
+}
+.newAccountForm input{
+    padding:5px;
+}
+.btn-default {
+    margin-top:20px;
+    background-color: #fff;
+    border: none;
+    border-left: solid #fff 2px;
+    border-right: solid #fff 2px;
+    padding: 5px;
+    font-weight: bolder;
+    font-size:medium;
+}
+    .btn-default:hover {
+        cursor: pointer;
+        border-left: solid #000 2px;
+        border-right: solid #000 2px;
+        text-shadow: 0 0 50px #000;
+        
+    }
+    .userInfo{
+
+    }
+/* ################################### *\
+|                                       |
 |                COMMON                 |
 |                                       |
 \* ################################### */
-html, body{
-    margin: 0px;
-    height: 100%;
-    width: 100%;
-}
+    html, body {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+    }
 body{
     min-width: 1424px;
     margin: 0px;

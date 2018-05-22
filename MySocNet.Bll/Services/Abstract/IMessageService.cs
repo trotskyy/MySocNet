@@ -14,6 +14,8 @@ namespace MySocNet.Bll.Services.Abstract
         void ReadMessage(MessageDto message);
         void ReadMessages(IEnumerable<MessageDto> messages);
 
+        void DeleteMessage(int id);
+
         void WriteMessage(MessageDto message);
         void WriteMessage(UserDto from, UserDto to, string text);
     }

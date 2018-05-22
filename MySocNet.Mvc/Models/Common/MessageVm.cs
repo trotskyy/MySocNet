@@ -28,6 +28,9 @@ namespace MySocNet.Mvc.Models.Common
         [Display(Name = "Отправлено")]
         public DateTime? Sent { get; set; }
 
+        public UserVm From { get; set; }
+        public UserVm To { get; set; }
+
         public MessageVm()
         {
 

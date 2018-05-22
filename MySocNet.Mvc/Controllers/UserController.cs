@@ -13,6 +13,7 @@ using AutoMapper;
 using MySocNet.Mvc.Models.Common;
 using MySocNet.Mvc.Models.Utils;
 using MySocNet.Mvc.Providers;
+using MySocNet.Mvc.Models.User;
 
 namespace MySocNet.Mvc.Controllers
 {
@@ -27,27 +28,70 @@ namespace MySocNet.Mvc.Controllers
         }
 
         // UserPage -> feed
-        public async Task<ActionResult> Index(int id)
+        public async Task<ActionResult> Index()
         {
-            UserDto user = await Task.Run(() => _serviceFacade.UserService.Get.ById(id));
+            UserDto user = new UserDto(((MySocNetPrincipal)User).UserId);
 
-            UserVm userVm = Mapper.Map<UserDto, UserVm>(user);
+            List<PostDto> feed = await Task.Run(() => _serviceFacade.PostService.Get.TopLatestFeedPosts(user, top: 10, withAuthors: true));
 
-            return View(userVm);
+            return View(feed.MapToVm());
         }
 
-        public async Task<ActionResult> Friends(int id)
+        private class UserEqualityComparer : IEqualityComparer<UserDto>
         {
-            List<UserDto> friends = await Task.Run(() => _serviceFacade.UserService.Get.AllFriendsOf(new UserDto(id)));
+            public bool Equals(UserDto x, UserDto y)
+            {
+                return x.Id == y.Id;
+            }
 
-            List<UserVm> friendsVm = Mapper.Map<List<UserDto>, List<UserVm>>(friends);
-
-            return View(friendsVm);
+            public int GetHashCode(UserDto obj)
+            {
+                return obj.Id.GetHashCode();
+            }
         }
 
-        public async Task<ActionResult> Messages(int id) //dialogs shown
+        public async Task<ActionResult> Friends(string specificly)
         {
-            List<DialogDto> dialogs = await Task.Run(() => _serviceFacade.MessageService.Get.TopLatestDialogs(new UserDto(id), 10));
+            if (specificly == null)
+                specificly = "";
+
+            int id = ((MySocNetPrincipal)User).UserId;
+
+            Func<List<UserDto>> selectFunc;
+
+            ViewBag.IsSubscribers = false;
+            ViewBag.IsSubscribtions = false;
+            ViewBag.IsFriends = false;
+
+            switch (specificly)
+            {
+                case "Subscribers":
+                    selectFunc = () => _serviceFacade.UserService.Get.AllSubscribersOf(new UserDto(id))
+                                            .Except(_serviceFacade.UserService.Get.AllFriendsOf(new UserDto(id)), new UserEqualityComparer()).ToList();
+                    ViewBag.IsSubscribers = true;
+                    break;
+                case "Subscribtions":
+                    selectFunc = () => _serviceFacade.UserService.Get.AllSubscriptionsOf(new UserDto(id))
+                                            .Except(_serviceFacade.UserService.Get.AllFriendsOf(new UserDto(id)), new UserEqualityComparer()).ToList();
+                    ViewBag.IsSubscribtions = true;
+                    break;
+                default:
+                    selectFunc = () => _serviceFacade.UserService.Get.AllFriendsOf(new UserDto(id));
+                    ViewBag.IsFriends = true;
+                    break;
+            }
+
+            List<UserDto> result = await Task.Run(selectFunc);
+
+            List<UserVm> resultVm = Mapper.Map<List<UserDto>, List<UserVm>>(result);
+
+            return View(resultVm);
+        }
+
+        public async Task<ActionResult> Messages() //dialogs shown
+        {
+            int id = ((MySocNetPrincipal)User).UserId;
+            List<DialogDto> dialogs = await Task.Run(() => _serviceFacade.MessageService.Get.TopLatestDialogs(new UserDto(id), 10, true));
 
             List<MessageVm> messageVms = new List<MessageVm>();
             foreach (var dialog in dialogs)
@@ -59,23 +103,44 @@ namespace MySocNet.Mvc.Controllers
         public async Task<ActionResult> Dialog(MessageVm lastMessage)
         {
             List<MessageDto> dialogMessages = 
-                await Task.Run(() => _serviceFacade.MessageService.Get.TopLatestMessagesOfDialog(new DialogDto(lastMessage.MapToDto()), 10));
+                await Task.Run(() => _serviceFacade.MessageService.Get.TopLatestMessagesOfDialog(new DialogDto(lastMessage.MapToDto()), 10, true));
 
             return View(dialogMessages.MapToVm());
         }
 
-        public async Task<ActionResult> Notifications(int id)
+        public async Task<ActionResult> Notifications()
         {
+            int id = ((MySocNetPrincipal)User).UserId;
             List<NotificationDto> notifications = await Task.Run(() => _serviceFacade.NotificationService.GetNotificationsByReceiver(new UserDto(id)));
 
             return View(notifications.MapToVm());
         }
 
-        public async Task<ActionResult> UserPage(int id)
+        //стена. личный тред юзера
+        public async Task<ActionResult> UserPage()
         {
-            UserDto user = await Task.Run(() => _serviceFacade.UserService.Get.ById(id));
+            var user = await Task.Run(() => _serviceFacade.UserService.Get.ById(((MySocNetPrincipal)User).UserId));
+            var wall = await Task.Run(() => _serviceFacade.PostService.Get.WallPosts(user.Id, top: 10, withAuthors: true));
 
-            return View(user.MapToVm());
+            UserPageVm userPageVm = new UserPageVm
+            {
+                AboutSelf = user.AboutSelf,
+                CityOfBirth = user.CityOfBirth,
+                CurrentCity = user.CurrentCity,
+                CurrentState = user.CurrentState,
+                DateOfBirth = user.DateOfBirth,
+                FirstName = user.FirstName,
+                IsMale = user.IsMale,
+                LastName = user.LastName,
+                StateOfBirth = user.StateOfBirth,
+                Wall = new List<KeyValuePair<PostVm, string>>()
+            };
+            foreach (var p in wall)
+            {
+                userPageVm.Wall.Add(new KeyValuePair<PostVm, string>(p.Key.MapToVm(), p.Value));
+            }
+
+            return View(userPageVm);
         }
     }
 }

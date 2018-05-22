@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MySocNet.Mvc.Models.Common.UserVm>
+
+@{
+    ViewBag.Title = "Friends";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mainContentWrapper">
+    <div class="mainContentHeader">
+        <div class="myFriendsContentHeader">
+            @Html.ActionLink("Мои друзья", "Friends", new { controller = "User",
+           id = ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId,
+           specificly = "Friends"}, new { style = ViewBag.IsFriends ? "background: #aaa;" : "" })
+
+            @Html.ActionLink("Мои подписки", "Friends", new { controller = "User",
+           id = ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId,
+           specificly = "Subscribtions"}, new { style = ViewBag.IsSubscribtions ? "background: #aaa;" : "" })
+
+            @Html.ActionLink("Мои подписчики", "Friends", new { controller = "User",
+           id = ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId,
+           specificly = "Subscribers"}, new { style = ViewBag.IsSubscribers ? "background: #aaa;" : "" })
+            <form>
+                <input type="text" name="fullName" placeholder="Введите Имя Фамилию" />
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+    </div>
+    <div class="mainContent">
+        <div class="subscriberOrSubscriptionList">
+            @foreach (var user in Model)
+            {
+            <a href="@Url.Action("UserPage", "Home", new { id = user.Id })" style="display:block;">
+                <p><b>@user.FirstName @user.LastName</b></p>
+                <div class="subscriberOrSubscription">
+
+                </div>
+            </a>
+            }
+        </div>
+    </div>
+</div>
+<div class="rightSideMenu">
+    <form class="friendFilterForm">
+        <p>Место жительства</p>
+        <input type="text" placeholder="Страна" />
+        <input type="text" placeholder="Город" />
+        <p>Место рождения</p>
+        <input type="text" placeholder="Страна" />
+        <input type="text" placeholder="Город" />
+        <p>Возраст</p>
+        <label for="ageFrom">От</label><input type="number" name="ageFrom" />
+        <br>
+        <label for="ageTo">До</label><input type="number" name="ageTo" />
+        <p>Пол</p>
+        <select name="IsMale">
+            <option></option>
+            <option value="true">Мужской</option>
+            <option value="false">Женский</option>
+        </select>
+        <p>О себе:</p>
+        <textarea name="AboutSelf"></textarea>
+    </form>
+</div>

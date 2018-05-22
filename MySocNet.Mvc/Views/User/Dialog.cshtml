@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MySocNet.Mvc.Models.Common.MessageVm>
+
+@{
+    ViewBag.Title = "Dialog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mainContentWrapper">
+    <div class="mainContentHeader">
+        <h4>Новое сообщение</h4>
+        @using (Html.BeginForm("Write", "Message", FormMethod.Post))
+        {
+            @Html.Hidden("toId", Model.FirstOrDefault()?.Id)
+            @Html.TextArea("text")
+            <button type="submit">Отправить</button>
+        }
+    </div>
+    <div class="mainContent">
+        <div id="dialogMessagesContainer">
+            @foreach (var msg in Model)
+            {
+                @Html.ActionLink("Удалить", "DeleteMessage",
+              new { controller = "Message", id = msg.Id}, new { style = "margin:15px; " + (msg.FromId == ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId ? " float:right;" : " float:left;") })
+                <div class="feedArticle" style="@(msg.IsRead == true ? "" : "background-color:#678;")
+                 @(msg.FromId == ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId ? " margin-left:100px;" : " margin-right: 100px")">
+                    <h4>@Html.ActionLink(msg.From.FirstName + " " + msg.From.LastName, "UserPage", new { controller = "Home" })</h4>
+                    <a href="@Url.Action("Dialog", new { controller = "User", FromId = msg.FromId, ToId = msg.ToId})"><p>@msg.Text</p></a>
+                </div>
+            }
+        </div>
+        @using (Ajax.BeginForm("UploadMoreMessages", new { controller = "Message" }, new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogMessagesContainer",
+                    InsertionMode = InsertionMode.InsertAfter
+                }))
+        {
+            <button type="submit">Загрузить старые сообщения</button>
+        }
+    </div>
+</div>
+

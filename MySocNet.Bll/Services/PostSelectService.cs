@@ -67,11 +67,22 @@ namespace MySocNet.Bll.Services
             return ExecuteSelectQuery(uow => uow.PostRepository.GetByThreads(threads.MapToDbEntitiesList()));
         }
 
-        public List<PostDto> TopLatestFeedPosts(UserDto user, int skip = -1, int top = -1)
+        public List<PostDto> TopLatestFeedPosts(UserDto user, int skip = -1, int top = -1, bool withAuthors = false)
         {
             ValidateUser(user);
 
-            return ExecuteSelectQuery(uow => uow.PostRepository.GetTopLatestFeedPosts(user.MapToDbEntity(), skip, top));
+            var posts = ExecuteSelectQuery(uow => uow.PostRepository.GetTopLatestFeedPosts(user.MapToDbEntity(), skip, top, withAuthors));
+
+            if(withAuthors)
+            {
+                foreach (var p in posts)
+                {
+                    p.Author = ExecuteSelectQuery<User>(uow => uow.UserRepository.GetById(p.AuthorId)).MapToDtoEntity();
+                    p.Thread = ExecuteSelectQuery(uow => uow.ThreadRepository.GetById(p.ThreadId)).MapToDtoEntity();
+                }
+            }
+
+            return posts;
         }
 
         public PostDto ById(int id)
@@ -85,6 +96,38 @@ namespace MySocNet.Bll.Services
         public List<PostDto> AllTopRecentPosts(int skip = -1, int top = -1)
         {
             return ExecuteSelectQuery(uow => uow.PostRepository.GetAllTopRecentPosts(skip, top));
+        }
+
+        public List<PostDto> WallPosts(int wallOwnerId, int top = -1, int skip = -1)
+        {
+            return ExecuteSelectQuery(uow => {
+                User wallOwner = uow.UserRepository.GetById(wallOwnerId);
+                string wallName = Utils.WallThreadNameResolver.GetWallThreadName(wallOwner);
+                return uow.PostRepository.GetPostsByThreadName(wallName, top, skip);
+            });
+        }
+
+        public List<KeyValuePair<PostDto, string>> WallPosts(int wallOwnerId, int top = -1, int skip = -1, bool withAuthors = false)
+        {
+            List<KeyValuePair<PostDto, string>> result = new List<KeyValuePair<PostDto, string>>();
+            ExecuteNonQuery(uow => {
+                User wallOwner = uow.UserRepository.GetById(wallOwnerId);
+                string wallName = Utils.WallThreadNameResolver.GetWallThreadName(wallOwner);
+
+                var threads = uow.ThreadRepository.GetByModerator(wallOwner);
+
+                var wall = threads.Where(t => t.Name == Utils.WallThreadNameResolver.GetWallThreadName(wallOwner))
+                    .FirstOrDefault();
+
+
+                var wallPosts = uow.PostRepository.GetByThread(wall);
+                foreach (var p in wallPosts)
+                {
+                    string author = uow.UserRepository.GetById(p.AuthorId).FullName();
+                    result.Add(new KeyValuePair<PostDto, string>(p.MapToDtoEntity(), author));
+                }
+            });
+            return result;
         }
     }
 }

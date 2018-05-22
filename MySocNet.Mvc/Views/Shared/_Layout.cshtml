@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="~/Content/Styles/Style.css" />
     <script src="~/Scripts/jquery-1.8.0.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 </head>
 <body>
     <dialog id="loadUserImageDialog">
@@ -29,12 +31,17 @@
             <h1>My Soc Net</h1>
             <nav>
                 <ul>
-                    <li><a href="#">Главная</a></li>
-                    <li>@Html.ActionLink("Контакты", "Contacts", new { controller = "Home" } )</li>
+                    <li>@Html.ActionLink("Контакты", "Contacts", new { controller = "Home" })</li>
                     <li>@Html.ActionLink("О нас", "About", new { controller = "Home" })</li>
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <li><a href="#" class="registrationLink">Регистрация</a></li>
+                        <li>@Html.ActionLink("Регистрация", "SignUp", new { controller = "Registration" }, new { @class = "registrationLink" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Моя страничка", "UserPage", 
+                           new { controller = "User", id = ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId }, 
+                           new { @class = "registrationLink" })</li>
                     }
                 </ul>
             </nav>
@@ -76,19 +83,18 @@
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#">Друзья<span>+2</span></a></li>
-                        <li><a href="#">Сообщения<span>+7</span></a></li>
-                        <li><a href="#">Треды</a></li>
-                        <li><a href="#">Уведомления<span>+1</span></a></li>
-                        <li><a href="#">Настройки</a></li>
+                        <li>@Html.ActionLink("Новости", "Index", new { controller = "User" })</li>
+                        <li>@Html.ActionLink("Друзья", "Friends", new { controller = "User" })</li>
+                        <li>@Html.ActionLink("Сообщения", "Messages", new { controller = "User" })</li>
+                        <li>@Html.ActionLink("Треды", "Threads", new { controller = "User" })</li>
+                        <li>@Html.ActionLink("Уведомления", "Notifications", new { controller = "User" })</li>
+                        <li>@Html.ActionLink("Настройки", "Settings", new { controller = "User" })</li>
                     </ul>
                 </nav>
             </div>
         }
-        <div class="mainContentWrapper">
-            @RenderBody()
-        </div>
+        @RenderBody()
     </div>
-    <script src="Content/Scripts/scripts.js"></script>
+    <script src="~/Content/Scripts/scripts.js"></script>
 </body>
 </html>

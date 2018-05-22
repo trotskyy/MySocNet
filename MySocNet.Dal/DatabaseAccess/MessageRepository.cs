@@ -33,12 +33,30 @@ namespace MySocNet.Dal
 
         public List<Message> GetLatestMessagesFromTopLatestDialogs(User user, int top)
         {
-            return _dbContext.Messages
-                .AsNoTracking()
-                .Take(top)
-                .Distinct()
-                .Where(m => m.FromId == user.Id || m.ToId == user.Id)
-                .OrderByDescending(m => m.Sent)
+            /*
+             *   SELECT * FROM (SELECT MAX(Id) as Id FROM (SELECT Id, ToId as UserId FROM [Messages] WHERE FromId = 1
+                  UNION
+                  SELECT Id, FromId as UserId FROM [Messages] WHERE ToId = 1) as t
+                  GROUP BY t.UserId) as Id
+                  JOIN [Messages] as m
+	                ON m.Id = Id.Id
+             */
+
+            var sent = _dbContext.Messages.AsNoTracking()
+                .Where(m => m.FromId == user.Id)
+                .Select(m => new { Id = m.Id, UserId = m.ToId});
+
+            var received = _dbContext.Messages.AsNoTracking()
+                .Where(m => m.ToId == user.Id)
+                .Select(m => new { Id = m.Id, UserId = m.FromId });
+
+            return sent.Union(received)
+                .GroupBy(t => t.UserId)
+                .Select(gr => gr.Max(t => t.Id))
+                .Join(_dbContext.Messages.AsNoTracking(),
+                    id => id,
+                    m => m.Id,
+                    (t, m) => m)
                 .ToList();
         }
 
@@ -58,10 +76,10 @@ namespace MySocNet.Dal
         {
             return _dbContext.Messages
                 .AsNoTracking()
-                .Take(top)
                 .Where(m => (m.FromId == user1.Id && m.ToId == user2.Id) ||
                             (m.ToId == user1.Id && m.FromId == user2.Id))
-                .OrderByDescending(m => m.Sent)
+                .OrderByDescending(m => m.Id)
+                .Take(top)
                 .ToList();
         }
 

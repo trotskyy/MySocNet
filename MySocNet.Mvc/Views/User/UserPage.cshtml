@@ -1,0 +1,83 @@
+﻿@model MySocNet.Mvc.Models.User.UserPageVm
+
+@{
+    ViewBag.Title = "UserPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="mainContentWrapper">
+
+    <div class="mainContentHeader">
+        <h4>Новый пост</h4>
+        @using (Html.BeginForm("Write", "Post", FormMethod.Post))
+        {
+            @Html.Hidden("authorId", ((MySocNet.Mvc.Providers.MySocNetPrincipal)User).UserId)
+            @Html.TextArea("text")
+            <button type="submit">Опубликовать</button>
+        }
+        <h3>Мои публикации</h3>
+    </div>
+    <div class="mainContent">
+        @foreach (var wallPost in Model.Wall)
+        {
+        <div class="feedArticle">
+            <!--Author-->
+            <h4>@Html.ActionLink(wallPost.Value, "UserPage", new { controller = "Home", id = wallPost.Key.AuthorId })</h4>
+            <p>@wallPost.Key.Text</p>
+            <!--<p>wallPost.Key.Text.Substring(0, Math.Max(wallPost.Key.Text.Length -1, 100))</p>-->
+            @if (wallPost.Key.Text.Length > 100)
+            {
+                <h5>@Html.ActionLink("Читать полностью", "UserPage", new { controller = "Post", id = wallPost.Key.Id })</h5>
+            }
+        </div>
+            }
+    </div>
+</div>
+    <div class="rightSideMenu">
+        <div style="margin:20px 0px 0px 20px;">
+            <h3>Обо мне</h3>
+            <dl class="userInfo">
+                <dd><b>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</b></dd>
+                </br>
+                <dt>
+                    <b>@Html.DisplayNameFor(model => model.DateOfBirth)</b>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DateOfBirth)
+                </dd>
+                </br>
+                <dt>
+                    <b>Проживает в:</b>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentCity), @Html.DisplayFor(model => model.CurrentState)
+                </dd>
+                </br>
+                <dt>
+                    <b>Родом из:</b>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CityOfBirth), @Html.DisplayFor(model => model.StateOfBirth)
+                </dd>
+                </br>
+                <dt>
+                    <b>@Html.DisplayNameFor(model => model.IsMale)</b>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IsMale)
+                </dd>
+                </br>
+                <dt>
+                    <b>@Html.DisplayNameFor(model => model.AboutSelf)</b>
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.AboutSelf)
+                </dd>
+
+            </dl>
+        </div>
+    </div>

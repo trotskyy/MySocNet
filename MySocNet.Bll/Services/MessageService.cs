@@ -76,5 +76,14 @@ namespace MySocNet.Bll.Services
         {
             WriteMessage(new MessageDto { From = from, To = to, Text = text });
         }
+
+        public void DeleteMessage(int id)
+        {
+            ExecuteNonQuery(uow =>
+            {
+                uow.MessageRepository.Delete(new Message { Id = id });
+                uow.SaveChanges();
+            });
+        }
     }
 }

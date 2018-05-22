@@ -9,6 +9,7 @@ using MySocNet.Dal.Entities;
 using MySocNet.Bll.Exceptions;
 using MySocNet.Bll.Dto.Utils;
 using AutoMapper;
+using System.Linq;
 
 namespace MySocNet.Bll.Services
 {
@@ -190,6 +191,14 @@ namespace MySocNet.Bll.Services
                 throw new DtoValidationException("Provide not empty login");
 
             return ExecuteSelectQuery(uow => uow.UserRepository.GetByLogin(login));
+        }
+
+        public int UserWallThreadId(UserDto user)
+        {
+            ValidateUser(user);
+
+            return ExecuteSelectQuery<int>(uow => uow.ThreadRepository.GetByModerator(user.MapToDbEntity())
+                    .First(t => t.Name == Utils.WallThreadNameResolver.GetWallThreadName(user.MapToDbEntity())).Id);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="user"></param>
         /// <param name="top"></param>
         /// <returns></returns>
-        List<DialogDto> TopLatestDialogs(UserDto user, int top);
+        List<DialogDto> TopLatestDialogs(UserDto user, int top, bool withAuthor = false);
 
         /// <summary>
         /// Получить top последних диалогов юзера (каждый из которых содержит по последнему сообщению), следующих за skip последних диалогов юзера
@@ -30,7 +30,7 @@ namespace MySocNet.Bll.Services.Abstract
         /// <param name="user2"></param>
         /// <param name="top">N</param>
         /// <returns></returns>
-        List<MessageDto> TopLatestMessagesOfDialog(DialogDto dialog, int top);
+        List<MessageDto> TopLatestMessagesOfDialog(DialogDto dialog, int top, bool withAuthor = false);
 
         /// <summary>
         /// Получить top последних сообщений диалога между двумя пользователями, следующих за skip последних сообщений диалога

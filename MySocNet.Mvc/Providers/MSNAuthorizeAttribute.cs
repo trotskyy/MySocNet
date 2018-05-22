@@ -15,7 +15,11 @@ namespace MySocNet.Mvc.Providers
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return ((CurrentUser != null && !CurrentUser.IsInRole(Roles)) || CurrentUser == null) ? false : true;
+            if (CurrentUser == null)
+                return false;
+            if (Roles == "")
+                return true;
+            return CurrentUser.IsInRole(Roles);
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -41,8 +45,10 @@ namespace MySocNet.Mvc.Providers
                  (new
                  {
                      //TODO ????
-                     controller = "Error",
-                     action = "AccessDenied"
+                     //controller = "Error",
+                     //action = "AccessDenied"
+                     controller = "Home",
+                     action = "Index"
                  }
                  ));
             }

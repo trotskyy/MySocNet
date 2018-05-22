@@ -80,12 +80,14 @@ namespace MySocNet.Bll.Services
                 throw new DtoValidationException("Set password!");
 
             User userToAdd = user.MapToDbEntity();
+            string wallName = Utils.WallThreadNameResolver.GetWallThreadName(userToAdd);
             //generate 128 bit salt
             userToAdd.PasswordSalt = _securityProvider.GenerateSalt(128 / 8);
             userToAdd.PasswordHash = _securityProvider.ComputeHash(user.Passwod, userToAdd.PasswordSalt);
 
             ExecuteNonQuery(uow => {
                 uow.UserRepository.Create(userToAdd);
+                uow.ThreadRepository.Create(new ConvThread { Name = wallName, Moderator = userToAdd }); //create wall
                 uow.SaveChanges();
             });
         }

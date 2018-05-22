@@ -84,6 +84,7 @@
     <Compile Include="Services\EfUnitOfWorkFactory.cs" />
     <Compile Include="Services\UserSelectService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\Utils\WallThreadNameResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

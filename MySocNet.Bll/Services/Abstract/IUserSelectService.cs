@@ -8,6 +8,8 @@ namespace MySocNet.Bll.Services.Abstract
 {
     public interface IUserSelectService
     {
+        int UserWallThreadId(UserDto user);
+
         UserDto ById(int id);
 
         UserDto ByLogin(string login);

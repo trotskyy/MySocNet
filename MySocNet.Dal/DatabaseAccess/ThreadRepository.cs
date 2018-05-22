@@ -63,6 +63,14 @@ namespace MySocNet.Dal
                 .ToList();
         }
 
+        public List<ConvThread> GetByModerator(User moderator)
+        {
+            return _dbContext.Threads
+                .AsNoTracking()
+                .Where(t => t.Id == moderator.Id)
+                .ToList();
+        }
+
         public int GetSubscribersCount(ConvThread thread)
         {
             return _dbContext.Threads
@@ -112,6 +120,14 @@ namespace MySocNet.Dal
                 .FilteredBy(filter)
                 .Where(t => t.Subscribers.Contains(subscriber, new UserIdEqualityComparer()))
                 .Select(t => new KeyValuePair<ConvThread, int>(t, t.Subscribers.Count))
+                .ToList();
+        }
+
+        public List<ConvThread> GetWall(User wallOwner)
+        {
+            return _dbContext.Threads
+                .AsNoTracking()
+                .Where(t => t.Name == string.Empty && t.ModeratorId == wallOwner.Id)
                 .ToList();
         }
     }

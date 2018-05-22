@@ -91,6 +91,25 @@ namespace MySocNet.Bll.Services.Abstract
             return Mapper.Map<TEntity, TDtoEntity>(result);
         }
 
+        protected T ExecuteSelectQuery<T>(Func<IUnitOfWork, T> selectQuery)
+        {
+            T result;
+
+            try
+            {
+                using (IUnitOfWork unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+                {
+                    result = selectQuery.Invoke(unitOfWork);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DomainModelException(ex);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// ExecuteSelectQuery(unitOfWork => unitOfWork
         ///        .UserRepository

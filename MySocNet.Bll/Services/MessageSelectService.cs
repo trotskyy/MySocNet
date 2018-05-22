@@ -33,17 +33,27 @@ namespace MySocNet.Bll.Services
                 .GetAllUnreadMessagesTo(to.MapToDbEntity()));
         }
 
-        public List<DialogDto> TopLatestDialogs(UserDto user, int top)
+        public List<DialogDto> TopLatestDialogs(UserDto user, int top, bool withAuthor = false)
         {
             if (top <= 0)
                 throw new ArgumentOutOfRangeException("top");
             ValidateUser(user);
 
-            return ExecuteSelectQuery(uow => uow.MessageRepository
+            var dialogs = ExecuteSelectQuery(uow => uow.MessageRepository
                 .GetLatestMessagesFromTopLatestDialogs(user.MapToDbEntity(), top))
                 .Select(msg => new DialogDto(msg))
                 .ToList();
-                
+            
+            if(withAuthor)
+            {
+                foreach (var d in dialogs)
+                {
+                    d.Messages.Last().From = ExecuteSelectQuery(uow => uow.UserRepository.GetById(d.Messages.Last().FromId)).MapToDtoEntity();
+                    d.Messages.Last().To = ExecuteSelectQuery(uow => uow.UserRepository.GetById(d.Messages.Last().ToId)).MapToDtoEntity();
+                }
+            }
+
+            return dialogs;
         }
 
         public List<DialogDto> TopLatestDialogs(UserDto user, int skip, int top)
@@ -60,7 +70,7 @@ namespace MySocNet.Bll.Services
                 .ToList();
         }
 
-        public List<MessageDto> TopLatestMessagesOfDialog(DialogDto dialog, int top)
+        public List<MessageDto> TopLatestMessagesOfDialog(DialogDto dialog, int top, bool withAuthor = false)
         {
             UserDto userOne = dialog?.UserOne ?? new UserDto() { Id = dialog.UserOneId };
             UserDto userTwo = dialog?.UserTwo ?? new UserDto() { Id = dialog.UserTwoId };
@@ -70,8 +80,20 @@ namespace MySocNet.Bll.Services
             ValidateUser(userOne);
             ValidateUser(userTwo);
 
-            return ExecuteSelectQuery(uow => uow.MessageRepository
-                .GetTopLatestMessagesOfDialogBetween(userTwo.MapToDbEntity(), userOne.MapToDbEntity(), top));
+            return ExecuteSelectQuery(uow => {
+                var res = uow.MessageRepository
+                .GetTopLatestMessagesOfDialogBetween(userTwo.MapToDbEntity(), userOne.MapToDbEntity(), top);
+
+                if (withAuthor)
+                {
+                    foreach (var m in res)
+                    {
+                        m.From = uow.UserRepository.GetById(m.FromId);
+                        m.To = uow.UserRepository.GetById(m.ToId);
+                    }
+                }
+                return res;
+                });
 
         }
 

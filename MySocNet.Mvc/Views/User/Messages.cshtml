@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MySocNet.Mvc.Models.Common.MessageVm>
+
+@{
+    ViewBag.Title = "Messages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mainContentWrapper">
+    <div class="mainContentHeader">
+        <h2>Мои диалоги</h2>
+    </div>
+    <div class="mainContent">
+        <div id="dialogsContainer">
+            @foreach (var msg in Model)
+            {
+                @Html.ActionLink("Удалить диалог", "DeleteDialog", 
+               new { controller = "Message", fromId = msg.FromId, toId = msg.ToId})
+                <div class="feedArticle" style="@(msg.IsRead == true ? "" : "background-color:#678;")">
+                    <h4>@Html.ActionLink(msg.From.FirstName + " " + msg.From.LastName, "UserPage", new { controller = "Home" })</h4>
+                    <a href="@Url.Action("Dialog", new { controller = "User", FromId = msg.FromId, ToId = msg.ToId})"><p>@msg.Text</p></a>
+                </div>
+            }
+        </div>
+
+        @using (Ajax.BeginForm("UploadMoreMessages", new { controller = "Message" }, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            UpdateTargetId = "dialogsContainer",
+            InsertionMode = InsertionMode.InsertAfter
+        }))
+        {
+            <button type="submit">Загрузить старые диалоги</button>
+        }
+
+    </div>
+</div>
+

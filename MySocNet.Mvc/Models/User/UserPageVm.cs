@@ -6,20 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using MySocNet.Mvc.Models.Utils;
+using MySocNet.Mvc.Models.Common;
 
-namespace MySocNet.Mvc.Models.Common
+namespace MySocNet.Mvc.Models.User
 {
-    //TODO finish common view models
-    public class UserVm
+    public class UserPageVm
     {
-        [HiddenInput(DisplayValue = false)]
-        public int Id { get; set; }
-
-        [Display(Name = "Логин")]
-        public string Login { get; set; }
-
-        [Display(Name = "Пароль")]
-        public string Passwod { get; set; }
         /// <summary>
         /// Имя
         /// </summary>
@@ -56,27 +48,17 @@ namespace MySocNet.Mvc.Models.Common
         [Display(Name = "О себе")]
         public string AboutSelf { get; set; }
         [Display(Name = "Дата рождения")]
+        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
         /// <summary>
         /// Male, Female or not mentioned
         /// </summary>
-        [BooleanDisplayValues("М","Ж")]
+        [BooleanDisplayValues("М", "Ж")]
         public bool? IsMale { get; set; }
+
         /// <summary>
-        /// Путь, по которому лежит фотка аватара юзера
+        /// Post and author name
         /// </summary>
-        public string AvatarPath { get; set; }
-        
-        public bool? IsModerator { get; set; }
-
-        public UserVm()
-        {
-
-        }
-
-        public UserVm(int id)
-        {
-            Id = id;
-        }
+        public List<KeyValuePair<PostVm, string>> Wall { get; set; }
     }
 }

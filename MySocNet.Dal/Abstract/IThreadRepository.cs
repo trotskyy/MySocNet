@@ -12,6 +12,8 @@ namespace MySocNet.Dal.Abstract
     {
         int GetSubscribersCount(ConvThread thread);
 
+        List<ConvThread> GetByModerator(User moderator);
+
         /// <summary>
         /// Трэд с кол-вом подписчиков, которые ведет юзер
         /// </summary>

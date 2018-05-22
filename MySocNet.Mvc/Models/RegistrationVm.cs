@@ -11,6 +11,7 @@ namespace MySocNet.Mvc.Models
     {
         [Display(Name = "Логин")]
         [Required]
+        [RegularExpression(@"[A-Za-z]+([A-Za-z]*[0-9]*)*", ErrorMessage = "Логин может состоять из букв и цифр")]
         public string Login { get; set; }
 
         [Display(Name = "Пароль")]
@@ -26,10 +27,12 @@ namespace MySocNet.Mvc.Models
 
         [Display(Name = "Имя")]
         [Required]
+        [RegularExpression(@"[А-Яа-я]+", ErrorMessage = "Имя должно состоять из русских букв")]
         public string FirstName { get; set; }
 
         [Display(Name = "Фамилия")]
         [Required]
+        [RegularExpression(@"[А-Яа-я]+", ErrorMessage = "Имя должно состоять из русских букв")]
         public string LastName { get; set; }
     }
 }
