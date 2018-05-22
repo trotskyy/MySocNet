@@ -142,5 +142,20 @@ namespace MySocNet.Mvc.Controllers
 
             return View(userPageVm);
         }
+
+        public async Task<ActionResult> Settings()
+        {
+            UserDto currentUser = await Task.Run(() => _serviceFacade.UserService.Get.ById(((MySocNetPrincipal)User).UserId));
+
+            return View(currentUser.MapToVm());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Settings(UserVm userVm)
+        {
+            _serviceFacade.UserService.ChangeSettings(userVm.MapToDto());
+
+            return RedirectToAction("UserPage");
+        }
     }
 }

@@ -33,6 +33,23 @@ namespace MySocNet.Bll.Services
             }
         }
 
+        public void ChangeSettings(UserDto userDto)
+        {
+            ValidateUser(userDto);
+
+            ExecuteNonQuery(uow => {
+                User user = uow.UserRepository.GetById(userDto.Id);
+                User newUser = userDto.MapToDbEntity();
+                newUser.Login = user.Login;
+                newUser.PasswordHash = user.PasswordHash;
+                newUser.PasswordSalt = user.PasswordSalt;
+                newUser.IsModerator = user.IsModerator;
+
+                uow.UserRepository.Update(newUser);
+                uow.SaveChanges();
+                });
+        }
+
         public void CheckLoginAndPassword(UserDto user, out bool isLoginValid, out bool isPasswordValid)
         {
             if (user == null)

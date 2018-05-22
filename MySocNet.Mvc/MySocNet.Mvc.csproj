@@ -186,6 +186,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Messages.cshtml" />
     <Content Include="Views\User\Dialog.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -28,5 +28,6 @@ namespace MySocNet.Bll.Services.Abstract
         /// Создать аккаунт нового пользователя
         /// </summary>
         void CreateAccount(string login, string password);
+        void ChangeSettings(UserDto userDto);
     }
 }
